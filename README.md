@@ -1,5 +1,3 @@
----
-
 ## 📍 POSTECH Campus Map
 
 **Search, navigate, and reserve campus facilities — all in one platform**
