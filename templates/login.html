@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Login – POSTECH Campus Map{% endblock %}
+{% block content %}
+<section class="centered">
+    <div class="auth-card">
+        <h2>Single Sign-On</h2>
+        <p class="auth-subtitle">POSTECH MEMBER SERVICE (Demo)</p>
+        {% if error %}
+            <div class="alert">{{ error }}</div>
+        {% endif %}
+        <form method="post">
+            <label class="field-label">ID</label>
+            <input class="field-input" type="text" name="user_id" required>
+
+            <label class="field-label">PASSWORD</label>
+            <input class="field-input" type="password" name="password" required>
+
+            <div class="auth-footer">
+                <button class="primary-btn full" type="submit">LOGIN</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

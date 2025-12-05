@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}POSTECH Campus Map – Landing{% endblock %}
+{% block content %}
+<section class="landing">
+    <div class="landing-card">
+        <img src="{{ url_for('static', filename='images/postech_logo.jpg') }}" alt="POSTECH" class="landing-logo">
+        <h1 class="landing-title">Campus MaP</h1>
+        <p class class="landing-subtitle">교내 시설을 한 곳에서 검색하고 예약하세요.</p>
+        <p class class="landing-subtitle">Search and Reserve campus facilities — All from one service.</p>
+        <br>
+        <div class="landing-buttons">
+            <a href="{{ url_for('login') }}" class="primary-btn large">Login</a>
+            <a href="{{ url_for('guest') }}" class="secondary-btn large">Guest</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding | Campus MaP</title>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Apple SD Gothic Neo",
+                         "Noto Sans KR", sans-serif;
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        .swiper {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .swiper-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 24px;
+        }
+
+        .img-box {
+            width: 100%;
+            max-width: 1200px;
+            height: 500px;
+            background: #f0f0f0;
+            border-radius: 24px;
+            margin: 0 auto 40px auto;
+        }
+
+        h2 {
+            font-size: 22px;
+            line-height: 1.5;
+            margin: 0 0 40px 0;
+            color: #B10036; /* 포스텍 컬러 */
+            font-weight: 600;
+        }
+
+        /* 영문도 같은 스타일, 줄만 바꿔서 */
+        h2 span.en {
+            display: block;
+            font-weight: 600;
+        }
+
+        .skip-wrapper {
+            position: absolute;
+            bottom: 32px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 20;          /* Swiper 위로 올리기 */
+        }
+
+        .skip-btn, .start-btn {
+            padding: 10px 26px;
+            font-size: 15px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .skip-btn {
+            background: transparent;
+            color: #666;
+        }
+
+        .start-btn {
+            background: #B10036;
+            color: #fff;
+            margin-top: 8px;
+        }
+
+        .swiper-pagination {
+            bottom: 100px !important; /* Skip 버튼 위로 위치 */
+        }
+
+        .onboarding-image {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto 14px auto;
+            display: block;
+            object-fit: contain;
+        }
+
+
+        @media (max-width: 768px) {
+            .img-box {
+                height: 200px;
+            }
+            h2 {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="swiper">
+    <div class="swiper-wrapper">
+
+        <!-- Slide 1 -->
+        <div class="swiper-slide">
+            <div class="slide-container">
+                <img
+                    class="onboarding-image"
+                    src="{{ url_for('static', filename='images/onboarding-1.png') }}"
+                    alt="Onboarding 1"
+                />
+                <h2>
+                    캠퍼스 시설을 한 곳에서 검색하고 예약하세요<br>
+                    <span class="en">Search & book campus facilities all in one place</span>
+                </h2>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="swiper-slide">
+            <div class="slide-container">
+                <img
+                    class="onboarding-image"
+                    src="{{ url_for('static', filename='images/onboarding-2.png') }}"
+                    alt="Onboarding 2"
+                />
+                <h2>
+                    원하는 시설을 편리하게 탐색하세요<br>
+                    <span class="en">Easily explore the facilities you need</span>
+                </h2>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="swiper-slide">
+            <div class="slide-container">
+                <img
+                    class="onboarding-image"
+                    src="{{ url_for('static', filename='images/onboarding-3.png') }}"
+                    alt="Onboarding 3"
+                />
+                <h2>
+                    위치 기반 길찾기 기능을 사용해보세요<br>
+                    <span class="en">Navigate campus using real-time mapping</span>
+                </h2>
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="swiper-slide">
+            <div class="slide-container">
+                <img
+                    class="onboarding-image"
+                    src="{{ url_for('static', filename='images/onboarding-4.png') }}"
+                    alt="Onboarding 4"
+                />
+                <h2>
+                    로그인하면 예약 서비스가 가능합니다<br>
+                    <span class="en">Log in to access reservation services</span>
+                </h2>
+                <form method="post" action="{{ url_for('onboarding_complete') }}">
+                    <button class="start-btn" type="submit">Start Now</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 페이지 인디케이터 -->
+    <div class="swiper-pagination"></div>
+
+    <!-- Skip 버튼 -->
+    <div class="skip-wrapper">
+        <form method="post" action="{{ url_for('onboarding_complete') }}">
+            <button class="skip-btn" type="submit">Skip</button>
+        </form>
+    </div>
+</div>
+
+
+    <!-- 페이지 인디케이터 -->
+    <div class="swiper-pagination"></div>
+
+    <!-- Skip -->
+    <div class="skip-wrapper">
+        <form method="post" action="{{ url_for('onboarding_complete') }}">
+            <button class="skip-btn" type="submit">Skip</button>
+        </form>
+    </div>
+</div>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    const swiper = new Swiper('.swiper', {
+        pagination: { 
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+    });
+</script>
+
+</body>
+</html>
