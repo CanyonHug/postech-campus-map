@@ -1,6 +1,3 @@
-Great! Here is a clean and professional **README.md** draft entirely in English — written for teammates joining the project 🚀
-You can copy-paste this directly into your GitHub repository.
-
 ---
 
 ## 📍 POSTECH Campus Map
