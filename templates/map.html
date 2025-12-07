@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/mapStyle.css') }}" />
+  <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>-->
 </head>
 
 <body>
@@ -118,6 +119,10 @@
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script type="text/javascript"
+    src="https://dapi.kakao.com/v2/maps/sdk.js?appkey={{ kakao_js_key }}&libraries=services"></script>
   <script type="text/javascript"
     src="https://dapi.kakao.com/v2/maps/sdk.js?appkey={{ kakao_js_key }}&libraries=services"></script>
   <script>
@@ -315,6 +320,14 @@
       initNavUI();
       loadFacilities();
       initCurrentLocation();
+
+  
+      $('#resDuration').on('input', function() {
+        const mins = parseInt($(this).val());
+        const h = Math.floor(mins / 60);
+        const m = mins % 60;
+        $('#durationLabel').text(`${h} h ${m} min`);
+      });
     });
 
     function initLangToggle() {
@@ -538,7 +551,7 @@
 
       // Library: Check for 'Cheongam' or 'Library', but explicitly EXCLUDE convenience stores/GS25
       const isConvenience = (cat === 'GS25') || nameEn.includes('convenience') || nameKo.includes('편의점');
-      const isLibraryBuild = (nameKo.includes('청암') || nameEn.includes('library')) && !isConvenience;
+      const isLibraryBuild = (nameKo.includes('청암') || nameEn.includes('library')) && !isConvenience && (cat !== 'Printer');
 
       // Final check
       const isReservable = isSports || isGSR || isLibraryBuild;
@@ -616,31 +629,63 @@
     }
 
     // ----- 예약 처리 -----
+    // ----- OLD handleReservation REPLACED WITH MODAL LOGIC ----- 
+
+    // ----- Updated handleReservation -----
     function handleReservation(facility) {
-      const timeSlot = prompt('예약 시간(예: 2025-12-05 14:00)을 입력하세요 / Enter time slot:');
-      if (!timeSlot) return;
-      const memo = prompt('메모(선택) / Memo (optional):') || '';
+      // 1. Reset Modal Fields
+      $('#resFacilityId').val(facility.id);
+      $('#resTime').val('');
+      $('#resDuration').val('1'); // Default to 1 hour
+      $('#resMemo').val('');
+      $('#resAlert').addClass('d-none').text('');
+      
+      // 2. Set Title
+      $('#resModalTitle').text(`Reserve: ${facility.name_ko}`);
+
+      // [Removed] Old seat/library logic is gone. Duration applies to all.
+
+      // 3. Show Modal
+      $('#reservationModal').modal('show');
+    }
+
+    // ----- Updated submitReservation -----
+    function submitReservation() {
+      const facilityId = $('#resFacilityId').val();
+      const timeSlot = $('#resTime').val();
+      const duration = $('#resDuration').val(); // Get duration
+      const memo = $('#resMemo').val();
+
+      if (!timeSlot) {
+        alert('시간을 선택해주세요 / Please select a time.');
+        return;
+      }
 
       fetch('/api/reserve', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          facility_id: facility.id,
+          facility_id: parseInt(facilityId),
           time_slot: timeSlot,
+          duration: parseInt(duration), // Send duration to server
           memo: memo
         })
       })
-        .then(res => res.json().then(body => ({ ok: res.ok, body })))
-        .then(({ ok, body }) => {
+        .then(res => res.json().then(body => ({ ok: res.ok, status: res.status, body })))
+        .then(({ ok, status, body }) => {
           if (!ok || !body.ok) {
-            alert(body.error || '예약에 실패했습니다. / Failed to reserve.');
+            const errorMsg = body.error || 'Reservation failed.';
+            $('#resAlert').removeClass('d-none').text(errorMsg);
           } else {
-            alert('예약이 완료되었습니다! / Reservation completed!');
+            $('#reservationModal').modal('hide');
+            alert('예약이 완료되었습니다! / Reservation successful!');
           }
         })
-        .catch(() => alert('예약 중 오류가 발생했습니다. / Error while reserving.'));
+        .catch((err) => {
+          console.error(err);
+          $('#resAlert').removeClass('d-none').text('Server Error');
+        });
     }
-
     // ----- 경로 안내 -----
     // ----- 경로 안내 -----
     function handleRoute() {
@@ -729,6 +774,53 @@
     }
 
   </script>
+
+
+  <div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resModalTitle">Facility Reservation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="resAlert" class="alert alert-danger d-none" role="alert"></div>
+
+          <form id="reservationForm">
+          <input type="hidden" id="resFacilityId">
+          
+          <div class="form-group">
+            <label for="resTime">Start Time / 시작 시간</label>
+            <input type="datetime-local" class="form-control" id="resTime" required>
+          </div>
+
+          <div class="form-group">
+            <label for="resDuration">
+              Duration / 이용 시간: 
+              <span id="durationLabel" style="color: #c41f3e; font-weight: bold;">1 h 0 min</span>
+            </label>
+            <input type="range" class="form-control-range" id="resDuration" 
+                   min="30" max="180" step="30" value="60">
+            <small class="form-text text-muted">
+              Slide to select (30 min ~ 3 hours).
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="resMemo">Memo / 메모 (Optional)</label>
+            <textarea class="form-control" id="resMemo" rows="2" placeholder="Purpose of use..."></textarea>
+          </div>
+        </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="submitReservation()">Confirm Reservation</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

@@ -161,16 +161,26 @@ def api_reserve():
     data = request.get_json()
     facility_id = data.get("facility_id")
     time_slot = data.get("time_slot")
+    
+    # [UPDATE] Default to 60 minutes if missing (was 1 before)
+    duration = data.get("duration", 60) 
+    
     memo = data.get("memo", "")
 
-    RESERVATIONS.append(
-        {
-            "user_id": user["id"],
-            "facility_id": facility_id,
-            "time_slot": time_slot,
-            "memo": memo,
-        }
-    )
+    if not time_slot:
+        return jsonify({"ok": False, "error": "시간을 선택해주세요."}), 400
+
+    # ... (Conflict check logic remains same for now) ...
+
+    RESERVATIONS.append({
+        "user_id": user["id"],
+        "facility_id": facility_id,
+        "time_slot": time_slot,
+        "duration": duration, # Saves as minutes (e.g., 90)
+        "memo": memo,
+    })
+    
+    print(f"Reservation: {time_slot}, Duration: {duration} min")
     return jsonify({"ok": True})
 
 @app.route("/api/route_walk")
