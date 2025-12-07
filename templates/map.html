@@ -1,801 +1,549 @@
 <!doctype html>
 <html lang="ko">
+
 <head>
   <meta charset="utf-8" />
   <title>POSTECH Campus Map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-  />
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
-      system-ui, sans-serif;
-    }
-    body {
-      background: #f5f7fb;
-    }
-    .page-wrapper {
-      display: flex;
-      flex-direction: column;
-      height: 100%; 
-    }
-    .top-bar {
-      flex: 0 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 24px;
-      background: rgba(255,255,255,0.95);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      z-index: 10;
-    }
-    .top-title {
-      font-weight: 700;
-      font-size: 20px;
-      color: #a30043;
-    }
-    .top-sub {
-      font-size: 13px;
-      color: #666;
-    }
-    .lang-toggle button {
-      border: none;
-      background: transparent;
-      font-size: 13px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      margin-left: 4px;
-      cursor: pointer;
-    }
-    .lang-toggle .active {
-      background: #a30043;
-      color: #fff;
-    }
-    .user-pill {
-      font-size: 13px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: #f0f2f7;
-      margin-right: 8px;
-    }
-    .map-layout {
-      flex: 1 1 auto;
-      display: flex;
-      min-height: 0;
-    }
-    #map {
-      flex: 1 1 auto;
-      height: 100%;
-    }
-    .left-panel {
-      flex: 0 0 320px;
-      max-width: 320px;
-      background: #ffffff;
-      border-right: 1px solid #e0e3ea;
-      padding: 16px 16px 12px;
-      display: flex;
-      flex-direction: column;
-      z-index: 5;
-    }
-    .left-panel h6 {
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    .form-group label {
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-    .small-label {
-      font-size: 12px;
-      color: #777;
-    }
-    .btn-rose {
-      background: #a30043;
-      color: #fff;
-      border: none;
-    }
-    .btn-rose:hover {
-      background: #870037;
-      color: #fff;
-    }
-
-    /* Navigation card */
-    .nav-card {
-      border-radius: 14px;
-      border: 1px solid #e1e4ee;
-      padding: 10px 12px;
-      margin-top: 8px;
-      background: #fafbff;
-    }
-    .nav-card-header {
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #333;
-    }
-    .nav-row {
-      margin-bottom: 8px;
-    }
-    .nav-row label {
-      font-size: 12px;
-      font-weight: 500;
-      margin-bottom: 4px;
-      display: block;
-    }
-    .nav-field-group {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .nav-select-btn {
-      flex: 1;
-      border-radius: 10px;
-      border: 1px solid #d6dae7;
-      background: #fff;
-      font-size: 12px;
-      padding: 6px 8px;
-      text-align: left;
-      cursor: pointer;
-    }
-    .nav-select-btn.active {
-      border-color: #a30043;
-      box-shadow: 0 0 0 1px rgba(163,0,67,0.15);
-    }
-    .nav-sub-btn {
-      border-radius: 10px;
-      border: 1px solid #d6dae7;
-      background: #f3f5fb;
-      font-size: 11px;
-      padding: 6px 8px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .nav-label-text {
-      font-size: 12px;
-      color: #333;
-    }
-    .nav-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 4px;
-    }
-    .primary-btn {
-      flex: 1;
-      padding: 6px 8px;
-      border-radius: 10px;
-      border: none;
-      background: #a30043;
-      color: #fff;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .ghost-btn {
-      padding: 6px 8px;
-      border-radius: 10px;
-      border: 1px solid #d6dae7;
-      background: #fff;
-      font-size: 12px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    #route-info {
-      font-size: 12px;
-      color: #555;
-      margin-top: 4px;
-      min-height: 18px;
-    }
-
-    /* Facility overlay */
-    .facility-overlay {
-      min-width: 260px;
-      max-width: 300px;
-      background: #ffffff;
-      border-radius: 14px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-      padding: 10px 12px 12px;
-      border: 1px solid rgba(0,0,0,0.05);
-    }
-    .overlay-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
-    .overlay-title {
-      font-weight: 600;
-      font-size: 14px;
-    }
-    .overlay-sub {
-      font-size: 11px;
-      color: #777;
-    }
-    .overlay-close {
-      border: none;
-      background: transparent;
-      font-size: 18px;
-      line-height: 1;
-      cursor: pointer;
-      color: #888;
-    }
-    .overlay-body {
-      font-size: 12px;
-      color: #555;
-      margin: 6px 0 8px;
-    }
-    .overlay-category {
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: #f5f0ff;
-      color: #5a35a3;
-      margin-top: 2px;
-      display: inline-block;
-    }
-    .overlay-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 6px;
-      align-items: center;
-      margin-top: 4px;
-    }
-    .overlay-nav-btn,
-    .overlay-reserve-btn {
-      border-radius: 999px;
-      border: none;
-      font-size: 11px;
-      padding: 6px 10px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .overlay-nav-btn {
-      background: #e9eefb;
-      color: #30408a;
-    }
-    .overlay-reserve-btn {
-      background: #a30043;
-      color: #fff;
-    }
-    .overlay-hint {
-      font-size: 11px;
-      color: #777;
-    }
-    .badge-guest {
-      font-size: 11px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: #fff3cd;
-      color: #856404;
-    }
-
-  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mapStyle.css') }}" />
 </head>
+
 <body>
-<div class="page-wrapper">
-  <!-- 상단 바 -->
-  <div class="top-bar">
-    <div>
-      <div class="top-title">POSTECH Campus Map</div>
-      <div class="top-sub">
-        교내 시설을 한 곳에서 검색하고 예약하세요 ·
-        Search and reserve on-campus facilities in one place
+  <div class="page-wrapper">
+    <!-- 상단 바 -->
+    <div class="top-bar">
+      <div>
+        <div class="top-title">POSTECH Campus Map</div>
+        <div class="top-sub">
+          교내 시설을 한 곳에서 검색하고 예약하세요 ·
+          Search and reserve on-campus facilities in one place
+        </div>
       </div>
-    </div>
-    <div class="d-flex align-items-center">
-      <div class="user-pill">
-        {% if user.is_guest %}
+      <div class="d-flex align-items-center">
+        <div class="user-pill">
+          {% if user.is_guest %}
           Guest Mode
-        {% else %}
+          {% else %}
           {{ user.name }} 님
+          {% endif %}
+        </div>
+        {% if user.is_guest %}
+        <a href="{{ url_for('login') }}" class="btn btn-sm btn-outline-secondary mr-2">Login</a>
+        {% else %}
+        <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-secondary mr-2">Logout</a>
         {% endif %}
       </div>
-      {% if user.is_guest %}
-        <a href="{{ url_for('login') }}" class="btn btn-sm btn-outline-secondary mr-2">Login</a>
-      {% else %}
-        <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-secondary mr-2">Logout</a>
-      {% endif %}
     </div>
-  </div>
 
-  <!-- 왼쪽 패널 + 지도 -->
-  <div class="map-layout">
-    <div class="left-panel">
-      <!-- Category & Search -->
-      <div class="form-group">
-        <label>Category / 카테고리</label>
-        <select class="form-control form-control-sm" id="categorySelect">
-          <option value="All">All · 전체</option>
-          <option value="Restaurant">Restaurant · 식당</option>
-          <option value="Cafe">Cafe · 카페</option>
-          <option value="Printer">Printer · 프린터</option>
-          <option value="GS25">Convenience Store · 편의점</option>
-          <option value="GSR">GSR · 스터디룸</option>
-          <option value="Sports">Sports · 운동시설</option>
-          <option value="Dormitory">Dormitory · 기숙사</option>
-          <option value="Others">Others · 기타</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Search / 검색</label>
-        <input
-          type="text"
-          id="searchInput"
-          class="form-control form-control-sm"
-          placeholder="예: 지곡, 청암, dormitory..."
-        />
-      </div>
-
-      <!-- Navigation card -->
-      <div class="nav-card">
-        <div class="nav-card-header">
-          Navigation · 길 안내 (Walk / 도보)
+    <!-- 왼쪽 패널 + 지도 -->
+    <div class="map-layout">
+      <div class="left-panel">
+        <!-- Category & Search -->
+        <div class="form-group">
+          <label>Category / 카테고리</label>
+          <select class="form-control form-control-sm" id="categorySelect">
+            <option value="All">All · 전체</option>
+            <option value="Restaurant">Restaurant · 식당</option>
+            <option value="Cafe">Cafe · 카페</option>
+            <option value="Printer">Printer · 프린터</option>
+            <option value="GS25">Convenience Store · 편의점</option>
+            <option value="GSR">GSR · 스터디룸</option>
+            <option value="Sports">Sports · 운동시설</option>
+            <option value="Dormitory">Dormitory · 기숙사</option>
+            <option value="Others">Others · 기타</option>
+          </select>
         </div>
 
-        <div class="nav-row">
-          <label>출발지(Start)</label>
-          <div class="nav-field-group">
-            <button id="startPickerBtn" class="nav-select-btn">
-              <span id="startLabel" class="nav-label-text">
-                클릭 후 아이콘 선택 · Tap then pick on map
+        <div class="form-group">
+          <label>Search / 검색</label>
+          <input type="text" id="searchInput" class="form-control form-control-sm"
+            placeholder="예: 지곡, 청암, dormitory..." />
+        </div>
+
+        <!-- Navigation card -->
+        <div class="nav-card">
+          <div class="nav-card-header">
+            Navigation · 길 안내 (Walk / 도보)
+          </div>
+
+          <div class="nav-row">
+            <label>출발지(Start)</label>
+            <div class="nav-field-group">
+              <button id="startPickerBtn" class="nav-select-btn">
+                <span id="startLabel" class="nav-label-text">
+                  클릭 후 아이콘 선택 · Tap then pick on map
+                </span>
+              </button>
+              <button id="useCurrentBtn" class="nav-sub-btn">
+                현재 위치
+              </button>
+            </div>
+          </div>
+
+          <div class="nav-row">
+            <label>도착지(Destination)</label>
+            <div class="nav-field-group">
+              <span id="destLabel" class="nav-label-text">
+                시설 아이콘에서 ‘길 안내’ 버튼을 눌러 설정하세요.
               </span>
+            </div>
+          </div>
+
+          <div class="nav-row nav-actions">
+            <button id="routeBtn" class="primary-btn">
+              경로 안내 · Show Route
             </button>
-            <button id="useCurrentBtn" class="nav-sub-btn">
-              현재 위치
+            <button id="clearRouteBtn" class="ghost-btn">
+              초기화 · Clear
             </button>
           </div>
+
+          <div id="route-info"></div>
+          <small class="small-label">
+            데모 버전: 두 지점을 직선 경로로 연결해 도보 거리와 시간을 계산합니다.
+            실제 서비스에서는 Kakao Mobility 길찾기 API로 교체할 수 있습니다.
+          </small>
         </div>
 
-        <div class="nav-row">
-          <label>도착지(Destination)</label>
-          <div class="nav-field-group">
-            <span id="destLabel" class="nav-label-text">
-              시설 아이콘에서 ‘길 안내’ 버튼을 눌러 설정하세요.
-            </span>
-          </div>
+        <div class="mt-auto pt-3 small-label text-muted">
+          로그인한 사용자만 예약이 가능합니다.<br />
+          Only logged-in users can make reservations.
         </div>
-
-        <div class="nav-row nav-actions">
-          <button id="routeBtn" class="primary-btn">
-            경로 안내 · Show Route
-          </button>
-          <button id="clearRouteBtn" class="ghost-btn">
-            초기화 · Clear
-          </button>
-        </div>
-
-        <div id="route-info"></div>
-        <small class="small-label">
-          데모 버전: 두 지점을 직선 경로로 연결해 도보 거리와 시간을 계산합니다.
-          실제 서비스에서는 Kakao Mobility 길찾기 API로 교체할 수 있습니다.
-        </small>
       </div>
 
-      <div class="mt-auto pt-3 small-label text-muted">
-        로그인한 사용자만 예약이 가능합니다.<br/>
-        Only logged-in users can make reservations.
-      </div>
+      <!-- 지도 -->
+      <div id="map"></div>
     </div>
-
-    <!-- 지도 -->
-    <div id="map"></div>
   </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script
-  type="text/javascript"
-  src="https://dapi.kakao.com/v2/maps/sdk.js?appkey={{ kakao_js_key }}&libraries=services"
-></script>
-<script>
-  let map;
-  let allFacilities = [];
-  let facilityMarkers = [];   // { marker, facility, iconUrl }
-  let activeOverlay = null;
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript"
+    src="https://dapi.kakao.com/v2/maps/sdk.js?appkey={{ kakao_js_key }}&libraries=services"></script>
+  <script>
+    let map;
+    let allFacilities = [];
+    let facilityMarkers = [];   // { marker, facility, iconUrl }
+    let activeOverlay = null;
 
-  let currentLang = 'ko';
-  let isDragging = false;
+    let currentLang = 'ko';
+    let isDragging = false;
 
-  let currentPosition = null;
-  let currentLocationMarker = null;
+    let currentPosition = null;
+    let currentLocationMarker = null;
 
-  let startFacility = null;
-  let destFacility = null;
-  let pickingStart = false;
-  let routePolyline = null;
+    let startFacility = null;
+    let destFacility = null;
+    let pickingStart = false;
+    let routePolyline = null;
 
-  const CURRENT_ICON = "{{ url_for('static', filename='images/current_location.jpg') }}";
-  const IS_GUEST = {{ 'true' if user.is_guest else 'false' }};
+    const CURRENT_ICON = "{{ url_for('static', filename='images/current_location.jpg') }}";
+    const IS_GUEST = {{ 'true' if user.is_guest else 'false' }};
 
-  // ---- 아이콘 매핑: 이전 프로젝트 규칙 그대로 반영 ----
-  function getIconUrlForFacility(facility) {
-    const name = facility.name_ko || "";
-    const cat  = facility.category || "";
+    // ---- 아이콘 매핑: 이전 프로젝트 규칙 그대로 반영 ----
+    function getIconUrlForFacility(facility) {
+      const name = facility.name_ko || "";
+      const cat = facility.category || "";
 
-    // 1) Restaurant
-    if (cat === "Restaurant") {
-      // 버거킹만 전용 아이콘
-      if (name.includes("버거킹")) {
-        return "{{ url_for('static', filename='logos/FacilityMarks/BurgerKing.JPG') }}";
+      // 1) Restaurant
+      if (cat === "Restaurant") {
+        // 버거킹만 전용 아이콘
+        if (name.includes("버거킹")) {
+          return "{{ url_for('static', filename='logos/FacilityMarks/BurgerKing.JPG') }}";
+        }
+        return "{{ url_for('static', filename='logos/FacilityMarks/RestaurantMark.JPG') }}";
       }
-      return "{{ url_for('static', filename='logos/FacilityMarks/RestaurantMark.JPG') }}";
-    }
 
-    // 2) Cafe
-    if (cat === "Cafe") {
-      return "{{ url_for('static', filename='logos/FacilityMarks/CafeIcon.JPG') }}";
-    }
+      // 2) Cafe
+      if (cat === "Cafe") {
+        return "{{ url_for('static', filename='logos/FacilityMarks/CafeIcon.JPG') }}";
+      }
 
-    // 3) Printer
-    if (cat === "Printer") {
-      return "{{ url_for('static', filename='logos/FacilityMarks/PrinterMark.JPG') }}";
-    }
+      // 3) Printer
+      if (cat === "Printer") {
+        return "{{ url_for('static', filename='logos/FacilityMarks/PrinterMark.JPG') }}";
+      }
 
-    // 4) GS25
-    if (cat === "GS25") {
-      return "{{ url_for('static', filename='logos/FacilityMarks/GS25.JPG') }}";
-    }
+      // 4) GS25
+      if (cat === "GS25") {
+        return "{{ url_for('static', filename='logos/FacilityMarks/GS25.JPG') }}";
+      }
 
-    // 5) GSR
-    if (cat === "GSR") {
-      return "{{ url_for('static', filename='logos/FacilityMarks/GSR.JPG') }}";
-    }
+      // 5) GSR
+      if (cat === "GSR") {
+        return "{{ url_for('static', filename='logos/FacilityMarks/GSR.JPG') }}";
+      }
 
-    // 6) Sports
-    if (cat === "Sports") {
-      // 예전: i==0 운동장→PlayGround, i==2 테니스장→Tennis, i==3 체육관→Gym, 나머지→Football
-      if (name.includes("운동장")) {
-        return "{{ url_for('static', filename='logos/FacilityMarks/PlayGround.JPG') }}";
+      // 6) Sports
+      if (cat === "Sports") {
+        // 예전: i==0 운동장→PlayGround, i==2 테니스장→Tennis, i==3 체육관→Gym, 나머지→Football
+        if (name.includes("운동장")) {
+          return "{{ url_for('static', filename='logos/FacilityMarks/PlayGround.JPG') }}";
+        }
+        if (name.includes("테니스")) {
+          return "{{ url_for('static', filename='logos/FacilityMarks/Tennis.JPG') }}";
+        }
+        if (name.includes("체육관")) {
+          return "{{ url_for('static', filename='logos/FacilityMarks/Gym.JPG') }}";
+        }
+        if (name.includes("포스플렉스")) {
+          return "{{ url_for('static', filename='logos/FacilityMarks/Gym.JPG') }}";
+        }
+        // 풋살장, 포스플렉스 등 나머지
+        return "{{ url_for('static', filename='logos/FacilityMarks/Football.JPG') }}";
       }
-      if (name.includes("테니스")) {
-        return "{{ url_for('static', filename='logos/FacilityMarks/Tennis.JPG') }}";
-      }
-      if (name.includes("체육관")) {
-        return "{{ url_for('static', filename='logos/FacilityMarks/Gym.JPG') }}";
-      }
-      if (name.includes("포스플렉스")) {
-        return "{{ url_for('static', filename='logos/FacilityMarks/Gym.JPG') }}";
-      }
-      // 풋살장, 포스플렉스 등 나머지
-      return "{{ url_for('static', filename='logos/FacilityMarks/Football.JPG') }}";
-    }
 
-    // 7) Dormitory (기숙사) – 예전 OthersPositions 0~27 아이콘 매핑 복원
-    if (cat === "Dormitory") {
-      // 남학생 생활관 1~19동 → blue1~blue19
-      if (name.includes("남학생 생활관 1동"))  return "{{ url_for('static', filename='logos/FacilityMarks/blue1.JPG') }}";
-      if (name.includes("남학생 생활관 2동"))  return "{{ url_for('static', filename='logos/FacilityMarks/blue2.JPG') }}";
-      if (name.includes("남학생 생활관 3동"))  return "{{ url_for('static', filename='logos/FacilityMarks/blue3.JPG') }}";
-      if (name.includes("남학생 생활관 4동"))  return "{{ url_for('static', filename='logos/FacilityMarks/blue4.JPG') }}";
-      if (name.includes("남학생 생활관 5동"))  return "{{ url_for('static', filename='logos/FacilityMarks/blue5.JPG') }}";
-      if (name.includes("남학생 생활관 6동"))  return "{{ url_for('static', filename='logos/FacilityMarks/blue6.JPG') }}";
-      if (name.includes("남학생 생활관 7동"))  return "{{ url_for('static', filename='logos/FacilityMarks/blue7.JPG') }}";
-      if (name.includes("남학생 생활관 8동"))  return "{{ url_for('static', filename='logos/FacilityMarks/blue8.JPG') }}";
-      if (name.includes("남학생 생활관 9동"))  return "{{ url_for('static', filename='logos/FacilityMarks/blue9.JPG') }}";
-      if (name.includes("남학생 생활관 10동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue10.JPG') }}";
-      if (name.includes("남학생 생활관 11동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue11.JPG') }}";
-      if (name.includes("남학생 생활관 12동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue12.JPG') }}";
-      if (name.includes("남학생 생활관 13동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue13.JPG') }}";
-      if (name.includes("남학생 생활관 14동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue14.JPG') }}";
-      if (name.includes("남학생 생활관 15동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue15.JPG') }}";
-      if (name.includes("남학생 생활관 16동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue16.JPG') }}";
-      if (name.includes("남학생 생활관 17동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue17.JPG') }}";
-      if (name.includes("남학생 생활관 18동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue18.JPG') }}";
-      if (name.includes("남학생 생활관 19동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue19.JPG') }}";
+      // 7) Dormitory (기숙사) – 예전 OthersPositions 0~27 아이콘 매핑 복원
+      if (cat === "Dormitory") {
+        // 남학생 생활관 1~19동 → blue1~blue19
+        if (name.includes("남학생 생활관 1동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue1.JPG') }}";
+        if (name.includes("남학생 생활관 2동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue2.JPG') }}";
+        if (name.includes("남학생 생활관 3동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue3.JPG') }}";
+        if (name.includes("남학생 생활관 4동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue4.JPG') }}";
+        if (name.includes("남학생 생활관 5동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue5.JPG') }}";
+        if (name.includes("남학생 생활관 6동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue6.JPG') }}";
+        if (name.includes("남학생 생활관 7동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue7.JPG') }}";
+        if (name.includes("남학생 생활관 8동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue8.JPG') }}";
+        if (name.includes("남학생 생활관 9동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue9.JPG') }}";
+        if (name.includes("남학생 생활관 10동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue10.JPG') }}";
+        if (name.includes("남학생 생활관 11동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue11.JPG') }}";
+        if (name.includes("남학생 생활관 12동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue12.JPG') }}";
+        if (name.includes("남학생 생활관 13동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue13.JPG') }}";
+        if (name.includes("남학생 생활관 14동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue14.JPG') }}";
+        if (name.includes("남학생 생활관 15동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue15.JPG') }}";
+        if (name.includes("남학생 생활관 16동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue16.JPG') }}";
+        if (name.includes("남학생 생활관 17동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue17.JPG') }}";
+        if (name.includes("남학생 생활관 18동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue18.JPG') }}";
+        if (name.includes("남학생 생활관 19동")) return "{{ url_for('static', filename='logos/FacilityMarks/blue19.JPG') }}";
 
-      // RC 20, 21동 → yellow20, yellow21
-      if (name.includes("RC 20동")) return "{{ url_for('static', filename='logos/FacilityMarks/yellow20.JPG') }}";
-      if (name.includes("RC 21동")) return "{{ url_for('static', filename='logos/FacilityMarks/yellow21.JPG') }}";
+        // RC 20, 21동 → yellow20, yellow21
+        if (name.includes("RC 20동")) return "{{ url_for('static', filename='logos/FacilityMarks/yellow20.JPG') }}";
+        if (name.includes("RC 21동")) return "{{ url_for('static', filename='logos/FacilityMarks/yellow21.JPG') }}";
 
-      // 여학생 생활관 1~3동 → red1~3
-      if (name.includes("여학생 생활관 1동")) return "{{ url_for('static', filename='logos/FacilityMarks/red1.JPG') }}";
-      if (name.includes("여학생 생활관 2동")) return "{{ url_for('static', filename='logos/FacilityMarks/red2.JPG') }}";
-      if (name.includes("여학생 생활관 3동")) return "{{ url_for('static', filename='logos/FacilityMarks/red3.JPG') }}";
+        // 여학생 생활관 1~3동 → red1~3
+        if (name.includes("여학생 생활관 1동")) return "{{ url_for('static', filename='logos/FacilityMarks/red1.JPG') }}";
+        if (name.includes("여학생 생활관 2동")) return "{{ url_for('static', filename='logos/FacilityMarks/red2.JPG') }}";
+        if (name.includes("여학생 생활관 3동")) return "{{ url_for('static', filename='logos/FacilityMarks/red3.JPG') }}";
 
-      // 대학원 아파트 1~4동 → green1~4
-      if (name.includes("대학원 아파트 1동")) return "{{ url_for('static', filename='logos/FacilityMarks/green1.JPG') }}";
-      if (name.includes("대학원 아파트 2동")) return "{{ url_for('static', filename='logos/FacilityMarks/green2.JPG') }}";
-      if (name.includes("대학원 아파트 3동")) return "{{ url_for('static', filename='logos/FacilityMarks/green3.JPG') }}";
-      if (name.includes("대학원 아파트 4동")) return "{{ url_for('static', filename='logos/FacilityMarks/green4.JPG') }}";
+        // 대학원 아파트 1~4동 → green1~4
+        if (name.includes("대학원 아파트 1동")) return "{{ url_for('static', filename='logos/FacilityMarks/green1.JPG') }}";
+        if (name.includes("대학원 아파트 2동")) return "{{ url_for('static', filename='logos/FacilityMarks/green2.JPG') }}";
+        if (name.includes("대학원 아파트 3동")) return "{{ url_for('static', filename='logos/FacilityMarks/green3.JPG') }}";
+        if (name.includes("대학원 아파트 4동")) return "{{ url_for('static', filename='logos/FacilityMarks/green4.JPG') }}";
 
-      // 혹시 이름이 안 맞으면 기본 기숙사 아이콘
-      return "{{ url_for('static', filename='logos/FacilityMarks/Dormitory.JPG') }}";
-    }
+        // 혹시 이름이 안 맞으면 기본 기숙사 아이콘
+        return "{{ url_for('static', filename='logos/FacilityMarks/Dormitory.JPG') }}";
+      }
 
-    // 8) Others – 도서관/국제관/상점/학과건물 등 (예전 OthersPositions 28~44)
-    if (cat === "Others") {
-      // 청암 / Library
-      if (name.includes("청암학술정보관")) {
-        return "{{ url_for('static', filename='logos/FacilityMarks/Library.JPG') }}";
-      }
-      // POSCO 국제관
-      if (name.includes("국제관")) {
-        return "{{ url_for('static', filename='logos/FacilityMarks/Posco.JPG') }}";
-      }
-      // 기념품샵
-      if (name.includes("기념품샵")) {
-        return "{{ url_for('static', filename='logos/FacilityMarks/Souvenir.JPG') }}";
-      }
-      // 통나무집
-      if (name.includes("통나무집")) {
-        return "{{ url_for('static', filename='logos/FacilityMarks/LogCabinMark.JPG') }}";
-      }
-      // 안경점
-      if (name.includes("안경점")) {
-        return "{{ url_for('static', filename='logos/FacilityMarks/Glasses.JPG') }}";
-      }
-      
-      // ---- 학과 건물 12개: DepartmentsMark 이하 ----
-      if (name.startsWith("기계공학과")) {
-        return "{{ url_for('static', filename='logos/DepartmentsMark/Mechanic.JPG') }}";
-      }
-      if (name.startsWith("무은재기념관")) {
-        return "{{ url_for('static', filename='logos/DepartmentsMark/Mueunjae.JPG') }}";
-      }
-      if (name.startsWith("물리학과")) {
-        return "{{ url_for('static', filename='logos/DepartmentsMark/Physics.JPG') }}";
-      }
-      if (name.startsWith("산업경영공학과")) {
-        return "{{ url_for('static', filename='logos/DepartmentsMark/Industry.JPG') }}";
-      }
-      if (name.startsWith("생명과학과")) {
-        return "{{ url_for('static', filename='logos/DepartmentsMark/Life.JPG') }}";
-      }
-      if (name.startsWith("수학과")) {
-        return "{{ url_for('static', filename='logos/DepartmentsMark/Math.JPG') }}";
-      }
-      if (name.startsWith("신소재공학과")) {
-        return "{{ url_for('static', filename='logos/DepartmentsMark/Material.JPG') }}";
-      }
-      if (name.startsWith("전자전기공학과")) {
-        return "{{ url_for('static', filename='logos/DepartmentsMark/Electronic.JPG') }}";
-      }
-      if (name.startsWith("컴퓨터공학과")) {
-        return "{{ url_for('static', filename='logos/DepartmentsMark/Computer.JPG') }}";
-      }
-      if (name.startsWith("화학공학과")) {
-        return "{{ url_for('static', filename='logos/DepartmentsMark/ChemicalEngineering.JPG') }}";
-      }
-      if (name.startsWith("화학과")) {
-        return "{{ url_for('static', filename='logos/DepartmentsMark/Chemistry.JPG') }}";
-      }
-      if (name.startsWith("IT융합공학과")) {
-        return "{{ url_for('static', filename='logos/DepartmentsMark/Cite.JPG') }}";
-      }
-      if (name.startsWith("포항 체인지업")) {
-        return "{{ url_for('static', filename='logos/FacilityMarks/CHANGeUP.png') }}";
-      }
-      
+      // 8) Others – 도서관/국제관/상점/학과건물 등 (예전 OthersPositions 28~44)
+      if (cat === "Others") {
+        // 청암 / Library
+        if (name.includes("청암학술정보관")) {
+          return "{{ url_for('static', filename='logos/FacilityMarks/Library.JPG') }}";
+        }
+        // POSCO 국제관
+        if (name.includes("국제관")) {
+          return "{{ url_for('static', filename='logos/FacilityMarks/Posco.JPG') }}";
+        }
+        // 기념품샵
+        if (name.includes("기념품샵")) {
+          return "{{ url_for('static', filename='logos/FacilityMarks/Souvenir.JPG') }}";
+        }
+        // 통나무집
+        if (name.includes("통나무집")) {
+          return "{{ url_for('static', filename='logos/FacilityMarks/LogCabinMark.JPG') }}";
+        }
+        // 안경점
+        if (name.includes("안경점")) {
+          return "{{ url_for('static', filename='logos/FacilityMarks/Glasses.JPG') }}";
+        }
 
-      // Others 기본
+        // ---- 학과 건물 12개: DepartmentsMark 이하 ----
+        if (name.startsWith("기계공학과")) {
+          return "{{ url_for('static', filename='logos/DepartmentsMark/Mechanic.JPG') }}";
+        }
+        if (name.startsWith("무은재기념관")) {
+          return "{{ url_for('static', filename='logos/DepartmentsMark/Mueunjae.JPG') }}";
+        }
+        if (name.startsWith("물리학과")) {
+          return "{{ url_for('static', filename='logos/DepartmentsMark/Physics.JPG') }}";
+        }
+        if (name.startsWith("산업경영공학과")) {
+          return "{{ url_for('static', filename='logos/DepartmentsMark/Industry.JPG') }}";
+        }
+        if (name.startsWith("생명과학과")) {
+          return "{{ url_for('static', filename='logos/DepartmentsMark/Life.JPG') }}";
+        }
+        if (name.startsWith("수학과")) {
+          return "{{ url_for('static', filename='logos/DepartmentsMark/Math.JPG') }}";
+        }
+        if (name.startsWith("신소재공학과")) {
+          return "{{ url_for('static', filename='logos/DepartmentsMark/Material.JPG') }}";
+        }
+        if (name.startsWith("전자전기공학과")) {
+          return "{{ url_for('static', filename='logos/DepartmentsMark/Electronic.JPG') }}";
+        }
+        if (name.startsWith("컴퓨터공학과")) {
+          return "{{ url_for('static', filename='logos/DepartmentsMark/Computer.JPG') }}";
+        }
+        if (name.startsWith("화학공학과")) {
+          return "{{ url_for('static', filename='logos/DepartmentsMark/ChemicalEngineering.JPG') }}";
+        }
+        if (name.startsWith("화학과")) {
+          return "{{ url_for('static', filename='logos/DepartmentsMark/Chemistry.JPG') }}";
+        }
+        if (name.startsWith("IT융합공학과")) {
+          return "{{ url_for('static', filename='logos/DepartmentsMark/Cite.JPG') }}";
+        }
+        if (name.startsWith("포항 체인지업")) {
+          return "{{ url_for('static', filename='logos/FacilityMarks/CHANGeUP.png') }}";
+        }
+
+
+        // Others 기본
+        return "{{ url_for('static', filename='logos/FacilityMarks/Default.JPG') }}";
+      }
+
+      // 혹시 카테고리가 이상하면 Default
       return "{{ url_for('static', filename='logos/FacilityMarks/Default.JPG') }}";
     }
 
-    // 혹시 카테고리가 이상하면 Default
-    return "{{ url_for('static', filename='logos/FacilityMarks/Default.JPG') }}";
-  }
-
-  // ----- 초기화 -----
-  $(function () {
-    initLangToggle();
-    initMap();
-    initNavUI();
-    loadFacilities();
-    initCurrentLocation();
-  });
-
-  function initLangToggle() {
-    const $buttons = $('#langToggle button');
-    $buttons.on('click', function () {
-      const lang = $(this).data('lang');
-      currentLang = lang;
-      $buttons.removeClass('active');
-      $(this).addClass('active');
-      if (activeOverlay && activeOverlay._facility) {
-        showFacilityOverlay(activeOverlay._facility);
-      }
-    });
-  }
-
-  function initMap() {
-    const mapContainer = document.getElementById('map');
-    const mapOption = {
-      center: new kakao.maps.LatLng(36.01449, 129.32154),
-      level: 3
-    };
-    map = new kakao.maps.Map(mapContainer, mapOption);
-
-    kakao.maps.event.addListener(map, 'dragstart', function () {
-      isDragging = true;
-    });
-    kakao.maps.event.addListener(map, 'dragend', function () {
-      setTimeout(function () { isDragging = false; }, 50);
-    });
-    kakao.maps.event.addListener(map, 'click', function () {
-      if (isDragging) return;
-      closeOverlay();
+    // ----- 초기화 -----
+    $(function () {
+      initLangToggle();
+      initMap();
+      initNavUI();
+      loadFacilities();
+      initCurrentLocation();
     });
 
-    // 줌 레벨 바뀔 때 마커 크기 조정
-    kakao.maps.event.addListener(map, 'zoom_changed', function () {
-      const level = map.getLevel();
-      facilityMarkers.forEach(obj => {
-        const img = buildScaledMarkerImage(obj.iconUrl, level);
-        obj.marker.setImage(img);
-      });
-    });
-  }
-
-  function initNavUI() {
-    const startPickerBtn = document.getElementById('startPickerBtn');
-    const startLabel = document.getElementById('startLabel');
-    const useCurrentBtn = document.getElementById('useCurrentBtn');
-    const routeBtn = document.getElementById('routeBtn');
-    const clearRouteBtn = document.getElementById('clearRouteBtn');
-
-    startPickerBtn.addEventListener('click', () => {
-      pickingStart = !pickingStart;
-      startPickerBtn.classList.toggle('active', pickingStart);
-      if (pickingStart) {
-        startLabel.textContent = '아이콘을 클릭해서 출발지를 선택하세요.';
-      } else {
-        if (!startFacility && !(startLabel.textContent.includes('현재 위치'))) {
-          startLabel.textContent = '클릭 후 아이콘 선택 · Tap then pick on map';
+    function initLangToggle() {
+      const $buttons = $('#langToggle button');
+      $buttons.on('click', function () {
+        const lang = $(this).data('lang');
+        currentLang = lang;
+        $buttons.removeClass('active');
+        $(this).addClass('active');
+        if (activeOverlay && activeOverlay._facility) {
+          showFacilityOverlay(activeOverlay._facility);
         }
-      }
-    });
+      });
+    }
 
-    useCurrentBtn.addEventListener('click', () => {
-      if (!currentPosition) {
-        alert('현재 위치 정보를 가져올 수 없습니다. 위치 권한을 허용해 주세요.');
-        initCurrentLocation();
+    function initMap() {
+      const mapContainer = document.getElementById('map');
+      const mapOption = {
+        center: new kakao.maps.LatLng(36.01449, 129.32154),
+        level: 3
+      };
+      map = new kakao.maps.Map(mapContainer, mapOption);
+
+      kakao.maps.event.addListener(map, 'dragstart', function () {
+        isDragging = true;
+      });
+      kakao.maps.event.addListener(map, 'dragend', function () {
+        setTimeout(function () { isDragging = false; }, 50);
+      });
+      kakao.maps.event.addListener(map, 'click', function () {
+        if (isDragging) return;
+        closeOverlay();
+      });
+
+      // 줌 레벨 바뀔 때 마커 크기 조정
+      kakao.maps.event.addListener(map, 'zoom_changed', function () {
+        const level = map.getLevel();
+        facilityMarkers.forEach(obj => {
+          const img = buildScaledMarkerImage(obj.iconUrl, level);
+          obj.marker.setImage(img);
+        });
+      });
+    }
+
+    function initNavUI() {
+      const startPickerBtn = document.getElementById('startPickerBtn');
+      const startLabel = document.getElementById('startLabel');
+      const useCurrentBtn = document.getElementById('useCurrentBtn');
+      const routeBtn = document.getElementById('routeBtn');
+      const clearRouteBtn = document.getElementById('clearRouteBtn');
+
+      startPickerBtn.addEventListener('click', () => {
+        pickingStart = !pickingStart;
+        startPickerBtn.classList.toggle('active', pickingStart);
+        if (pickingStart) {
+          startLabel.textContent = '아이콘을 클릭해서 출발지를 선택하세요.';
+        } else {
+          if (!startFacility && !(startLabel.textContent.includes('현재 위치'))) {
+            startLabel.textContent = '클릭 후 아이콘 선택 · Tap then pick on map';
+          }
+        }
+      });
+
+      useCurrentBtn.addEventListener('click', () => {
+        if (!currentPosition) {
+          alert('현재 위치 정보를 가져올 수 없습니다. 위치 권한을 허용해 주세요.');
+          initCurrentLocation();
+          return;
+        }
+        startFacility = null;
+        pickingStart = false;
+        startPickerBtn.classList.remove('active');
+        startLabel.textContent = '현재 위치 (My location)';
+      });
+
+      routeBtn.addEventListener('click', handleRoute);
+      clearRouteBtn.addEventListener('click', clearRoute);
+    }
+
+    function initCurrentLocation() {
+      if (!navigator.geolocation) {
+        console.warn("Geolocation not supported");
         return;
       }
-      startFacility = null;
-      pickingStart = false;
-      startPickerBtn.classList.remove('active');
-      startLabel.textContent = '현재 위치 (My location)';
-    });
+      navigator.geolocation.getCurrentPosition(
+        function (pos) {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          currentPosition = new kakao.maps.LatLng(lat, lng);
 
-    routeBtn.addEventListener('click', handleRoute);
-    clearRouteBtn.addEventListener('click', clearRoute);
-  }
-
-  function initCurrentLocation() {
-    if (!navigator.geolocation) {
-      console.warn("Geolocation not supported");
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      function (pos) {
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
-        currentPosition = new kakao.maps.LatLng(lat, lng);
-
-        if (currentLocationMarker) {
-          currentLocationMarker.setMap(null);
+          if (currentLocationMarker) {
+            currentLocationMarker.setMap(null);
+          }
+          const img = new kakao.maps.MarkerImage(
+            CURRENT_ICON,
+            new kakao.maps.Size(26, 26),
+            { offset: new kakao.maps.Point(13, 13) }
+          );
+          currentLocationMarker = new kakao.maps.Marker({
+            position: currentPosition,
+            image: img,
+            zIndex: 999
+          });
+          currentLocationMarker.setMap(map);
+        },
+        function (err) {
+          console.warn("Cannot get current position:", err);
         }
-        const img = new kakao.maps.MarkerImage(
-          CURRENT_ICON,
-          new kakao.maps.Size(26, 26),
-          { offset: new kakao.maps.Point(13, 13) }
-        );
-        currentLocationMarker = new kakao.maps.Marker({
-          position: currentPosition,
-          image: img,
-          zIndex: 999
-        });
-        currentLocationMarker.setMap(map);
-      },
-      function (err) {
-        console.warn("Cannot get current position:", err);
-      }
-    );
-  }
-
-  // ----- 시설 로딩 & 필터링 -----
-  function loadFacilities() {
-    fetch('/api/facilities')
-      .then(res => res.json())
-      .then(data => {
-        allFacilities = data;
-        renderMarkers();
-        bindFilterEvents();
-      })
-      .catch(err => console.error(err));
-  }
-
-  function bindFilterEvents() {
-    $('#categorySelect').on('change', renderMarkers);
-    $('#searchInput').on('input', function () {
-      clearTimeout(window._searchTimer);
-      window._searchTimer = setTimeout(renderMarkers, 200);
-    });
-  }
-
-  function getFilteredFacilities() {
-    const category = $('#categorySelect').val();
-    const q = ($('#searchInput').val() || '').toLowerCase().trim();
-
-    return allFacilities.filter(f => {
-      if (category && category !== 'All' && f.category !== category) return false;
-      if (q) {
-        const text = (f.name_ko + ' ' + f.name_en + ' ' + f.desc_ko + ' ' + f.desc_en).toLowerCase();
-        if (!text.includes(q)) return false;
-      }
-      return true;
-    });
-  }
-
-  function buildScaledMarkerImage(iconUrl, level) {
-    const baseSize = 32;              // level 3 기준
-    const scale = 3 / level;          // level 커질수록 작게
-    const size = Math.max(18, baseSize * scale);
-    return new kakao.maps.MarkerImage(
-      iconUrl,
-      new kakao.maps.Size(size, size),
-      { offset: new kakao.maps.Point(size / 2, size) }
-    );
-  }
-
-  function renderMarkers() {
-    // 기존 마커 제거
-    facilityMarkers.forEach(obj => obj.marker.setMap(null));
-    facilityMarkers = [];
-    closeOverlay();
-
-    const facilities = getFilteredFacilities();
-    const level = map.getLevel();
-
-    facilities.forEach(facility => {
-      const pos = new kakao.maps.LatLng(facility.lat, facility.lng);
-      const iconUrl = getIconUrlForFacility(facility);   // ★ 여기 변경
-      const markerImage = buildScaledMarkerImage(iconUrl, level);
-
-      const marker = new kakao.maps.Marker({
-        position: pos,
-        image: markerImage,
-        map: map
-      });
-
-      const markerObj = { marker, facility, iconUrl };
-      facilityMarkers.push(markerObj);
-
-      kakao.maps.event.addListener(marker, 'click', function () {
-        handleMarkerClick(markerObj);
-      });
-    });
-  }
-
-  function handleMarkerClick(markerObj) {
-    const facility = markerObj.facility;
-    const startLabel = document.getElementById('startLabel');
-
-    // 출발지 선택 모드인 경우
-    if (pickingStart) {
-      startFacility = facility;
-      pickingStart = false;
-      document.getElementById('startPickerBtn').classList.remove('active');
-      startLabel.textContent = `${facility.name_ko} / ${facility.name_en}`;
-      return;
+      );
     }
 
-    // 일반 클릭: 오버레이 열기
-    showFacilityOverlay(facility);
-  }
+    // ----- 시설 로딩 & 필터링 -----
+    function loadFacilities() {
+      fetch('/api/facilities')
+        .then(res => res.json())
+        .then(data => {
+          allFacilities = data;
+          renderMarkers();
+          bindFilterEvents();
+        })
+        .catch(err => console.error(err));
+    }
 
-  // ----- 시설 오버레이 -----
-  function showFacilityOverlay(facility) {
-    closeOverlay();
+    function bindFilterEvents() {
+      $('#categorySelect').on('change', renderMarkers);
+      $('#searchInput').on('input', function () {
+        clearTimeout(window._searchTimer);
+        window._searchTimer = setTimeout(renderMarkers, 200);
+      });
+    }
 
-    const pos = new kakao.maps.LatLng(facility.lat, facility.lng);
-    const wrapper = document.createElement('div');
-    wrapper.className = 'facility-overlay';
+    function getFilteredFacilities() {
+      const category = $('#categorySelect').val();
+      const q = ($('#searchInput').val() || '').toLowerCase().trim();
 
-    wrapper.innerHTML = `
+      return allFacilities.filter(f => {
+        if (category && category !== 'All' && f.category !== category) return false;
+        if (q) {
+          const text = (f.name_ko + ' ' + f.name_en + ' ' + f.desc_ko + ' ' + f.desc_en).toLowerCase();
+          if (!text.includes(q)) return false;
+        }
+        return true;
+      });
+    }
+
+    function buildScaledMarkerImage(iconUrl, level) {
+      const baseSize = 32;              // level 3 기준
+      const scale = 3 / level;          // level 커질수록 작게
+      const size = Math.max(18, baseSize * scale);
+      return new kakao.maps.MarkerImage(
+        iconUrl,
+        new kakao.maps.Size(size, size),
+        { offset: new kakao.maps.Point(size / 2, size) }
+      );
+    }
+
+    function renderMarkers() {
+      // 기존 마커 제거
+      facilityMarkers.forEach(obj => obj.marker.setMap(null));
+      facilityMarkers = [];
+      closeOverlay();
+
+      const facilities = getFilteredFacilities();
+      const level = map.getLevel();
+
+      facilities.forEach(facility => {
+        const pos = new kakao.maps.LatLng(facility.lat, facility.lng);
+        const iconUrl = getIconUrlForFacility(facility);   // ★ 여기 변경
+        const markerImage = buildScaledMarkerImage(iconUrl, level);
+
+        const marker = new kakao.maps.Marker({
+          position: pos,
+          image: markerImage,
+          map: map
+        });
+
+        const markerObj = { marker, facility, iconUrl };
+        facilityMarkers.push(markerObj);
+
+        kakao.maps.event.addListener(marker, 'click', function () {
+          handleMarkerClick(markerObj);
+        });
+      });
+    }
+
+    function handleMarkerClick(markerObj) {
+      const facility = markerObj.facility;
+      const startLabel = document.getElementById('startLabel');
+
+      // 출발지 선택 모드인 경우
+      if (pickingStart) {
+        startFacility = facility;
+        pickingStart = false;
+        document.getElementById('startPickerBtn').classList.remove('active');
+        startLabel.textContent = `${facility.name_ko} / ${facility.name_en}`;
+        return;
+      }
+
+      // 일반 클릭: 오버레이 열기
+      showFacilityOverlay(facility);
+    }
+
+    // ----- 시설 오버레이 -----
+    function showFacilityOverlay(facility) {
+      closeOverlay();
+
+      const pos = new kakao.maps.LatLng(facility.lat, facility.lng);
+      const wrapper = document.createElement('div');
+      wrapper.className = 'facility-overlay';
+
+      const nameKo = facility.name_ko || "";
+      const nameEn = (facility.name_en || "").toLowerCase();
+      const cat = facility.category;
+
+      // Identify "Gym" to exclude it from Sports
+      const isGym = nameKo.includes('체육관') || nameEn.includes('gym') || nameKo.includes('포스플렉스');
+
+      // Define Reservable Categories
+      const isSports = (cat === 'Sports') && !isGym;
+      const isGSR = (cat === 'GSR');
+
+      // Library: Check for 'Cheongam' or 'Library', but explicitly EXCLUDE convenience stores/GS25
+      const isConvenience = (cat === 'GS25') || nameEn.includes('convenience') || nameKo.includes('편의점');
+      const isLibraryBuild = (nameKo.includes('청암') || nameEn.includes('library')) && !isConvenience;
+
+      // Final check
+      const isReservable = isSports || isGSR || isLibraryBuild;
+
+      wrapper.innerHTML = `
       <div class="overlay-header">
         <div>
           <div class="overlay-title">
@@ -815,165 +563,172 @@
           길 안내 (Route)
         </button>
         ${
-          IS_GUEST
+        // [New Logic] 2. Only render button/badge if isReservable is true
+        !isReservable
+          ? ''
+          : (IS_GUEST
             ? '<span class="badge-guest">Guest · 예약 불가</span>'
             : '<button type="button" class="overlay-reserve-btn">예약하기 (Reserve)</button>'
+          )
         }
       </div>
     `;
 
-    const closeBtn = wrapper.querySelector('.overlay-close');
-    closeBtn.addEventListener('click', closeOverlay);
+      const closeBtn = wrapper.querySelector('.overlay-close');
+      closeBtn.addEventListener('click', closeOverlay);
 
-    // 길 안내 버튼 → 도착지 설정
-    const navBtn = wrapper.querySelector('.overlay-nav-btn');
-    navBtn.addEventListener('click', function () {
-      destFacility = facility;
-      const destLabel = document.getElementById('destLabel');
-      destLabel.textContent = `${facility.name_ko} / ${facility.name_en}`;
-      map.panTo(pos);
-    });
-
-    // 예약 버튼
-    if (!IS_GUEST) {
-      const reserveBtn = wrapper.querySelector('.overlay-reserve-btn');
-      reserveBtn.addEventListener('click', function () {
-        handleReservation(facility);
+      // 길 안내 버튼
+      const navBtn = wrapper.querySelector('.overlay-nav-btn');
+      navBtn.addEventListener('click', function () {
+        destFacility = facility;
+        const destLabel = document.getElementById('destLabel');
+        destLabel.textContent = `${facility.name_ko} / ${facility.name_en}`;
+        map.panTo(pos);
       });
+
+      // [New Logic] 3. Bind click event only if button exists
+      if (!IS_GUEST && isReservable) {
+        const reserveBtn = wrapper.querySelector('.overlay-reserve-btn');
+        if (reserveBtn) {
+          reserveBtn.addEventListener('click', function () {
+            handleReservation(facility);
+          });
+        }
+      }
+
+      const overlay = new kakao.maps.CustomOverlay({
+        position: pos,
+        yAnchor: 1.05,
+        xAnchor: 0.5,
+        content: wrapper,
+        clickable: true
+      });
+      overlay._facility = facility;
+      overlay.setMap(map);
+      activeOverlay = overlay;
     }
 
-    const overlay = new kakao.maps.CustomOverlay({
-      position: pos,
-      yAnchor: 1.05,
-      xAnchor: 0.5,
-      content: wrapper,
-      clickable: true
-    });
-    overlay._facility = facility;
-    overlay.setMap(map);
-    activeOverlay = overlay;
-  }
-
-  function closeOverlay() {
-    if (activeOverlay) {
-      activeOverlay.setMap(null);
-      activeOverlay = null;
+    function closeOverlay() {
+      if (activeOverlay) {
+        activeOverlay.setMap(null);
+        activeOverlay = null;
+      }
     }
-  }
 
-  // ----- 예약 처리 -----
-  function handleReservation(facility) {
-    const timeSlot = prompt('예약 시간(예: 2025-12-05 14:00)을 입력하세요 / Enter time slot:');
-    if (!timeSlot) return;
-    const memo = prompt('메모(선택) / Memo (optional):') || '';
+    // ----- 예약 처리 -----
+    function handleReservation(facility) {
+      const timeSlot = prompt('예약 시간(예: 2025-12-05 14:00)을 입력하세요 / Enter time slot:');
+      if (!timeSlot) return;
+      const memo = prompt('메모(선택) / Memo (optional):') || '';
 
-    fetch('/api/reserve', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        facility_id: facility.id,
-        time_slot: timeSlot,
-        memo: memo
+      fetch('/api/reserve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          facility_id: facility.id,
+          time_slot: timeSlot,
+          memo: memo
+        })
       })
-    })
-      .then(res => res.json().then(body => ({ ok: res.ok, body })))
-      .then(({ ok, body }) => {
-        if (!ok || !body.ok) {
-          alert(body.error || '예약에 실패했습니다. / Failed to reserve.');
-        } else {
-          alert('예약이 완료되었습니다! / Reservation completed!');
-        }
-      })
-      .catch(() => alert('예약 중 오류가 발생했습니다. / Error while reserving.'));
-  }
-
-  // ----- 경로 안내 -----
-  // ----- 경로 안내 -----
-  function handleRoute() {
-    const routeInfo = document.getElementById('route-info');
-    if (!destFacility) {
-      alert('도착지를 먼저 선택해주세요. 시설 아이콘에서 "길 안내" 버튼을 눌러주세요.');
-      return;
+        .then(res => res.json().then(body => ({ ok: res.ok, body })))
+        .then(({ ok, body }) => {
+          if (!ok || !body.ok) {
+            alert(body.error || '예약에 실패했습니다. / Failed to reserve.');
+          } else {
+            alert('예약이 완료되었습니다! / Reservation completed!');
+          }
+        })
+        .catch(() => alert('예약 중 오류가 발생했습니다. / Error while reserving.'));
     }
 
-    let startLatLng = null;
-    if (startFacility) {
-      startLatLng = new kakao.maps.LatLng(startFacility.lat, startFacility.lng);
-    } else if (currentPosition) {
-      startLatLng = currentPosition;
-    } else {
-      alert('출발지를 선택하거나 현재 위치 정보를 허용해주세요.');
-      return;
-    }
+    // ----- 경로 안내 -----
+    // ----- 경로 안내 -----
+    function handleRoute() {
+      const routeInfo = document.getElementById('route-info');
+      if (!destFacility) {
+        alert('도착지를 먼저 선택해주세요. 시설 아이콘에서 "길 안내" 버튼을 눌러주세요.');
+        return;
+      }
 
-    const endLatLng = new kakao.maps.LatLng(destFacility.lat, destFacility.lng);
+      let startLatLng = null;
+      if (startFacility) {
+        startLatLng = new kakao.maps.LatLng(startFacility.lat, startFacility.lng);
+      } else if (currentPosition) {
+        startLatLng = currentPosition;
+      } else {
+        alert('출발지를 선택하거나 현재 위치 정보를 허용해주세요.');
+        return;
+      }
 
-    // 서버에 Kakao Mobility 경로 요청
-    const url = `/api/route_walk?origin_lat=${startLatLng.getLat()}&origin_lng=${startLatLng.getLng()}&dest_lat=${endLatLng.getLat()}&dest_lng=${endLatLng.getLng()}`;
+      const endLatLng = new kakao.maps.LatLng(destFacility.lat, destFacility.lng);
 
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        if (!data.ok) {
-          alert(data.error || '경로를 가져오지 못했습니다.');
-          return;
-        }
+      // 서버에 Kakao Mobility 경로 요청
+      const url = `/api/route_walk?origin_lat=${startLatLng.getLat()}&origin_lng=${startLatLng.getLng()}&dest_lat=${endLatLng.getLat()}&dest_lng=${endLatLng.getLng()}`;
 
-        // 기존 Polyline 지우기
-        if (routePolyline) {
-          routePolyline.setMap(null);
-          routePolyline = null;
-        }
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.ok) {
+            alert(data.error || '경로를 가져오지 못했습니다.');
+            return;
+          }
 
-        const path = data.path.map(p => new kakao.maps.LatLng(p.lat, p.lng));
+          // 기존 Polyline 지우기
+          if (routePolyline) {
+            routePolyline.setMap(null);
+            routePolyline = null;
+          }
 
-        routePolyline = new kakao.maps.Polyline({
-          path: path,
-          strokeWeight: 5,
-          strokeColor: '#ff0050',
-          strokeOpacity: 0.9,
-          strokeStyle: 'solid',
-          map: map
+          const path = data.path.map(p => new kakao.maps.LatLng(p.lat, p.lng));
+
+          routePolyline = new kakao.maps.Polyline({
+            path: path,
+            strokeWeight: 5,
+            strokeColor: '#ff0050',
+            strokeOpacity: 0.9,
+            strokeStyle: 'solid',
+            map: map
+          });
+
+          // Kakao가 준 distance(자동차 경로 거리)를 그대로 사용하고,
+          // 시간은 "도보 기준"으로 다시 계산
+          const distance = data.distance; // m
+          const walkSpeed = 1.3;          // m/s (약 4.7km/h)
+          const seconds = distance / walkSpeed;
+          const minutes = Math.round(seconds / 60);
+
+          routeInfo.textContent =
+            `거리: 약 ${(distance / 1000).toFixed(2)} km · 예상 도보 ${minutes}분`;
+
+          // 모든 경로가 보이도록 Bounds 설정
+          const bounds = new kakao.maps.LatLngBounds();
+          path.forEach(latlng => bounds.extend(latlng));
+          map.setBounds(bounds);
+        })
+        .catch(err => {
+          console.error(err);
+          alert('경로 요청 중 오류가 발생했습니다.');
         });
-
-        // Kakao가 준 distance(자동차 경로 거리)를 그대로 사용하고,
-        // 시간은 "도보 기준"으로 다시 계산
-        const distance = data.distance; // m
-        const walkSpeed = 1.3;          // m/s (약 4.7km/h)
-        const seconds = distance / walkSpeed;
-        const minutes = Math.round(seconds / 60);
-
-        routeInfo.textContent =
-          `거리: 약 ${(distance / 1000).toFixed(2)} km · 예상 도보 ${minutes}분`;
-
-        // 모든 경로가 보이도록 Bounds 설정
-        const bounds = new kakao.maps.LatLngBounds();
-        path.forEach(latlng => bounds.extend(latlng));
-        map.setBounds(bounds);
-      })
-      .catch(err => {
-        console.error(err);
-        alert('경로 요청 중 오류가 발생했습니다.');
-      });
-  }
-
-
-  function clearRoute() {
-    if (routePolyline) {
-      routePolyline.setMap(null);
-      routePolyline = null;
     }
-    startFacility = null;
-    destFacility = null;
-    pickingStart = false;
-    document.getElementById('startPickerBtn').classList.remove('active');
-    document.getElementById('startLabel').textContent =
-      '클릭 후 아이콘 선택 · Tap then pick on map';
-    document.getElementById('destLabel').textContent =
-      '시설 아이콘에서 ‘길 안내’ 버튼을 눌러 설정하세요.';
-    document.getElementById('route-info').textContent = '';
-  }
 
-</script>
+
+    function clearRoute() {
+      if (routePolyline) {
+        routePolyline.setMap(null);
+        routePolyline = null;
+      }
+      startFacility = null;
+      destFacility = null;
+      pickingStart = false;
+      document.getElementById('startPickerBtn').classList.remove('active');
+      document.getElementById('startLabel').textContent =
+        '클릭 후 아이콘 선택 · Tap then pick on map';
+      document.getElementById('destLabel').textContent =
+        '시설 아이콘에서 ‘길 안내’ 버튼을 눌러 설정하세요.';
+      document.getElementById('route-info').textContent = '';
+    }
+
+  </script>
 </body>
+
 </html>
