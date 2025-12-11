@@ -52,6 +52,7 @@
             <option value="GSR">GSR · 스터디룸</option>
             <option value="Sports">Sports · 운동시설</option>
             <option value="Dormitory">Dormitory · 기숙사</option>
+            <option value="Parking">Parking · 주차장</option>
             <option value="Others">Others · 기타</option>
           </select>
         </div>
@@ -429,7 +430,12 @@
         return "{{ url_for('static', filename='logos/FacilityMarks/Dormitory.JPG') }}";
       }
 
-      // 8) Others – 도서관/국제관/상점/학과건물 등 (예전 OthersPositions 28~44)
+      // 8) Parking
+      if (cat === "Parking") {
+        return "{{ url_for('static', filename='logos/FacilityMarks/ParkingLot.JPG') }}";
+      }
+
+      // 9) Others – 도서관/국제관/상점/학과건물 등 (예전 OthersPositions 28~44)
       if (cat === "Others") {
         // 청암 / Library
         if (name.includes("청암학술정보관")) {

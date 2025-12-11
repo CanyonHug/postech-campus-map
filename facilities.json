@@ -728,5 +728,345 @@
         "lng": 129.32357121483807,
         "desc_ko": "포항시의 스타트업 육성 및 창업 지원 공간",
         "desc_en": "Startup incubation and co-working hub in Pohang"
+    },
+    {
+        "id": 200,
+        "name_ko": "포항공과대학교 주차장 1",
+        "name_en": "POSTECH Parking Lot 1",
+        "category": "Parking",
+        "lat": 36.010296608989144,
+        "lng": 129.32698243621428,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 1",
+        "desc_en": "POSTECH campus parking lot 1"
+    },
+    {
+        "id": 201,
+        "name_ko": "포항공과대학교 주차장 4",
+        "name_en": "POSTECH Parking Lot 4",
+        "category": "Parking",
+        "lat": 36.01358306863976,
+        "lng": 129.3252381437754,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 4",
+        "desc_en": "POSTECH campus parking lot 4"
+    },
+    {
+        "id": 202,
+        "name_ko": "포항공과대학교 주차장 6",
+        "name_en": "POSTECH Parking Lot 6",
+        "category": "Parking",
+        "lat": 36.01609984443451,
+        "lng": 129.3222955312823,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 6",
+        "desc_en": "POSTECH campus parking lot 6"
+    },
+    {
+        "id": 203,
+        "name_ko": "포항공과대학교 주차장 7",
+        "name_en": "POSTECH Parking Lot 7",
+        "category": "Parking",
+        "lat": 36.017829547876644,
+        "lng": 129.32463096787563,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 7",
+        "desc_en": "POSTECH campus parking lot 7"
+    },
+    {
+        "id": 204,
+        "name_ko": "포항공과대학교 주차장 8",
+        "name_en": "POSTECH Parking Lot 8",
+        "category": "Parking",
+        "lat": 36.01928369223097,
+        "lng": 129.323054440208,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 8",
+        "desc_en": "POSTECH campus parking lot 8"
+    },
+    {
+        "id": 205,
+        "name_ko": "포항공과대학교 주차장 9",
+        "name_en": "POSTECH Parking Lot 9",
+        "category": "Parking",
+        "lat": 36.02188166425159,
+        "lng": 129.32103450371076,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 9",
+        "desc_en": "POSTECH campus parking lot 9"
+    },
+    {
+        "id": 206,
+        "name_ko": "포항공과대학교 주차장 10",
+        "name_en": "POSTECH Parking Lot 10",
+        "category": "Parking",
+        "lat": 36.02087946388904,
+        "lng": 129.31951335289156,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 10",
+        "desc_en": "POSTECH campus parking lot 10"
+    },
+    {
+        "id": 207,
+        "name_ko": "포항공과대학교 주차장 11",
+        "name_en": "POSTECH Parking Lot 11",
+        "category": "Parking",
+        "lat": 36.018973215135574,
+        "lng": 129.3186145614003,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 11",
+        "desc_en": "POSTECH campus parking lot 11"
+    },
+    {
+        "id": 208,
+        "name_ko": "포항공과대학교 주차장 12",
+        "name_en": "POSTECH Parking Lot 12",
+        "category": "Parking",
+        "lat": 36.01972340642542,
+        "lng": 129.31942400129722,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 12",
+        "desc_en": "POSTECH campus parking lot 12"
+    },
+    {
+        "id": 209,
+        "name_ko": "포항공과대학교 주차장 13",
+        "name_en": "POSTECH Parking Lot 13",
+        "category": "Parking",
+        "lat": 36.01937028768953,
+        "lng": 129.31904765070254,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 13",
+        "desc_en": "POSTECH campus parking lot 13"
+    },
+    {
+        "id": 210,
+        "name_ko": "포항공과대학교 주차장 14",
+        "name_en": "POSTECH Parking Lot 14",
+        "category": "Parking",
+        "lat": 36.0202746377225,
+        "lng": 129.31794288454927,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 14",
+        "desc_en": "POSTECH campus parking lot 14"
+    },
+    {
+        "id": 211,
+        "name_ko": "포항공과대학교 주차장 15",
+        "name_en": "POSTECH Parking Lot 15",
+        "category": "Parking",
+        "lat": 36.02098879685838,
+        "lng": 129.31642215374038,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 15",
+        "desc_en": "POSTECH campus parking lot 15"
+    },
+    {
+        "id": 212,
+        "name_ko": "포항공과대학교 주차장 16",
+        "name_en": "POSTECH Parking Lot 16",
+        "category": "Parking",
+        "lat": 36.02134106688459,
+        "lng": 129.31684284051164,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 16",
+        "desc_en": "POSTECH campus parking lot 16"
+    },
+    {
+        "id": 213,
+        "name_ko": "포항공과대학교 주차장 18",
+        "name_en": "POSTECH Parking Lot 18",
+        "category": "Parking",
+        "lat": 36.02356711144549,
+        "lng": 129.31844420428203,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 18",
+        "desc_en": "POSTECH campus parking lot 18"
+    },
+    {
+        "id": 214,
+        "name_ko": "포항공과대학교 주차장 19",
+        "name_en": "POSTECH Parking Lot 19",
+        "category": "Parking",
+        "lat": 36.023413592878086,
+        "lng": 129.31706437099973,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 19",
+        "desc_en": "POSTECH campus parking lot 19"
+    },
+    {
+        "id": 215,
+        "name_ko": "포항공과대학교 주차장 20",
+        "name_en": "POSTECH Parking Lot 20",
+        "category": "Parking",
+        "lat": 36.02387712903015,
+        "lng": 129.3168561206569,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 20",
+        "desc_en": "POSTECH campus parking lot 20"
+    },
+    {
+        "id": 216,
+        "name_ko": "포항공과대학교 주차장 21",
+        "name_en": "POSTECH Parking Lot 21",
+        "category": "Parking",
+        "lat": 36.02329438073926,
+        "lng": 129.31670595452675,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 21",
+        "desc_en": "POSTECH campus parking lot 21"
+    },
+    {
+        "id": 217,
+        "name_ko": "포항공과대학교 주차장 22",
+        "name_en": "POSTECH Parking Lot 22",
+        "category": "Parking",
+        "lat": 36.01918317368833,
+        "lng": 129.32196459075203,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 22",
+        "desc_en": "POSTECH campus parking lot 22"
+    },
+    {
+        "id": 218,
+        "name_ko": "포항공과대학교 주차장 23",
+        "name_en": "POSTECH Parking Lot 23",
+        "category": "Parking",
+        "lat": 36.022633568258044,
+        "lng": 129.31546655786372,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 23",
+        "desc_en": "POSTECH campus parking lot 23"
+    },
+    {
+        "id": 219,
+        "name_ko": "포항공과대학교 주차장 24",
+        "name_en": "POSTECH Parking Lot 24",
+        "category": "Parking",
+        "lat": 36.01139118307284,
+        "lng": 129.319551257252,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 24",
+        "desc_en": "POSTECH campus parking lot 24"
+    },
+    {
+        "id": 220,
+        "name_ko": "포항공과대학교 주차장 25",
+        "name_en": "POSTECH Parking Lot 25",
+        "category": "Parking",
+        "lat": 36.01537278835948,
+        "lng": 129.32285088431905,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 25",
+        "desc_en": "POSTECH campus parking lot 25"
+    },
+    {
+        "id": 221,
+        "name_ko": "포항공과대학교 주차장 26",
+        "name_en": "POSTECH Parking Lot 26",
+        "category": "Parking",
+        "lat": 36.01732152324276,
+        "lng": 129.32178795532178,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 26",
+        "desc_en": "POSTECH campus parking lot 26"
+    },
+    {
+        "id": 222,
+        "name_ko": "포항공과대학교 주차장 27",
+        "name_en": "POSTECH Parking Lot 27",
+        "category": "Parking",
+        "lat": 36.01784101579824,
+        "lng": 129.321947379033,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 27",
+        "desc_en": "POSTECH campus parking lot 27"
+    },
+    {
+        "id": 223,
+        "name_ko": "포항공과대학교 주차장 28",
+        "name_en": "POSTECH Parking Lot 28",
+        "category": "Parking",
+        "lat": 36.01792681111368,
+        "lng": 129.3203084853725,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 28",
+        "desc_en": "POSTECH campus parking lot 28"
+    },
+    {
+        "id": 224,
+        "name_ko": "포항공과대학교 주차장 29",
+        "name_en": "POSTECH Parking Lot 29",
+        "category": "Parking",
+        "lat": 36.017626645494836,
+        "lng": 129.32045494996234,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 29",
+        "desc_en": "POSTECH campus parking lot 29"
+    },
+    {
+        "id": 225,
+        "name_ko": "포항공과대학교 주차장 30",
+        "name_en": "POSTECH Parking Lot 30",
+        "category": "Parking",
+        "lat": 36.01842827785432,
+        "lng": 129.32139899014396,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 30",
+        "desc_en": "POSTECH campus parking lot 30"
+    },
+    {
+        "id": 226,
+        "name_ko": "포항공과대학교 주차장 31",
+        "name_en": "POSTECH Parking Lot 31",
+        "category": "Parking",
+        "lat": 36.018338247117484,
+        "lng": 129.3204647313773,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 31",
+        "desc_en": "POSTECH campus parking lot 31"
+    },
+    {
+        "id": 227,
+        "name_ko": "포항공과대학교 주차장 33",
+        "name_en": "POSTECH Parking Lot 33",
+        "category": "Parking",
+        "lat": 36.0230000139187,
+        "lng": 129.3174848180799,
+        "desc_ko": "포항공과대학교 캠퍼스 주차장 33",
+        "desc_en": "POSTECH campus parking lot 33"
+    },
+    {
+        "id": 228,
+        "name_ko": "기초과학연구원 포스텍캠퍼스 주차장",
+        "name_en": "IBS POSTECH Campus Parking",
+        "category": "Parking",
+        "lat": 36.024008849374255,
+        "lng": 129.31236792562362,
+        "desc_ko": "기초과학연구원 포스텍캠퍼스 인근 주차장",
+        "desc_en": "Parking lot near IBS POSTECH campus"
+    },
+    {
+        "id": 229,
+        "name_ko": "포항가속기연구소 주차장",
+        "name_en": "PAL Parking Lot",
+        "category": "Parking",
+        "lat": 36.024701289940396,
+        "lng": 129.31663624753136,
+        "desc_ko": "포항가속기연구소 인근 주차장",
+        "desc_en": "Parking lot near Pohang Accelerator Laboratory"
+    },
+    {
+        "id": 230,
+        "name_ko": "RIST 동편 주차장",
+        "name_en": "RIST East Parking Lot",
+        "category": "Parking",
+        "lat": 36.01084540472391,
+        "lng": 129.32447014184064,
+        "desc_ko": "RIST 동편 주차장",
+        "desc_en": "East-side parking lot at RIST"
+    },
+    {
+        "id": 231,
+        "name_ko": "바이오오픈이노베이션센터 주차장",
+        "name_en": "Bio Open Innovation Center Parking",
+        "category": "Parking",
+        "lat": 36.01095293361039,
+        "lng": 129.32635853756935,
+        "desc_ko": "바이오오픈이노베이션센터 인근 주차장",
+        "desc_en": "Parking lot near Bio Open Innovation Center"
+    },
+    {
+        "id": 232,
+        "name_ko": "포항공과대학교 제2공학관 주차장",
+        "name_en": "POSTECH Bldg 2 Parking",
+        "category": "Parking",
+        "lat": 36.01312606051469,
+        "lng": 129.32301781615845,
+        "desc_ko": "포항공과대학교 제2공학관 인근 주차장",
+        "desc_en": "Parking lot near Engineering Building 2"
+    },
+    {
+        "id": 233,
+        "name_ko": "포항공과대학교 C5 주차장",
+        "name_en": "POSTECH C5 Parking",
+        "category": "Parking",
+        "lat": 36.013505398598696,
+        "lng": 129.3262228702265,
+        "desc_ko": "포항공과대학교 C5 인근 주차장",
+        "desc_en": "Parking lot near C5 building"
     }
 ]
