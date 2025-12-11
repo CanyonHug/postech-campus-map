@@ -145,6 +145,195 @@
     const CURRENT_ICON = "{{ url_for('static', filename='images/current_location.jpg') }}";
     const IS_GUEST = {{ 'true' if user.is_guest else 'false' }};
 
+        /* === [NEW] Restaurant metadata for detailed popups === */
+    const restaurantInfo = {
+      jigok: {
+        name: "지곡회관 식당 · Jigok Dining Hall",
+        type: "Campus Cafeteria",
+        hours: [
+          {
+            labelKo: "조식",
+            labelEn: "Breakfast",
+            time: "07:30–09:30",
+            noteKo: "(주말/공휴일/방학 08:00–09:30)",
+            noteEn: "(weekend/holiday/vacation 08:00–09:30)"
+          },
+          {
+            labelKo: "중식",
+            labelEn: "Lunch",
+            time: "11:30–13:30"
+          },
+          {
+            labelKo: "석식",
+            labelEn: "Dinner",
+            time: "17:30–19:00"
+          },
+          {
+            labelKo: "연중무휴",
+            labelEn: "Open throughout the year"
+          }
+        ],
+        menus: {
+          breakfast: {
+            title: "조식 · BREAKFAST",
+            items: [
+              "어묵국 · Fish Cake Soup",
+              "떡갈비야채볶음 · Stir-fried Tteokgalbi with Vegetables",
+              "시래기조림 · Braised Dried Radish Greens",
+              "깻잎순나물 · Seasoned Perilla Shoots",
+              "873 kcal · 41 g protein",
+              "미니브런치 · Mini Brunch — 848 kcal · 27 g protein"
+            ]
+          },
+          lunch: {
+            title: "중식 · LUNCH",
+            items: [
+              "돼지국밥 · Pork Rice Soup",
+              "부추겉절이 · Fresh Chive Kimchi",
+              "청포묵김무침 · Seasoned Mung Bean Jelly with Seaweed",
+              "사과주스 · Apple Juice",
+              "607 kcal · 33 g protein"
+            ]
+          },
+          dinner: {
+            title: "석식 · DINNER",
+            items: [
+              "소고기배추국 · Beef & Napa Cabbage Soup",
+              "코다리조림 · Braised Half-dried Pollack (Kodari Jorim)",
+              "미니돈까스강정 · Mini Pork Cutlet Glazed Bites",
+              "치커리토마토무침 · Seasoned Chicory & Tomato",
+              "1657 kcal · 63 g protein"
+            ]
+          }
+        }
+      },
+
+      studentHall: {
+        name: "학생식당 · Student Hall Cafeteria",
+        type: "Campus Cafeteria",
+        hours: [
+          {
+            labelKo: "중식",
+            labelEn: "Lunch",
+            time: "11:30–13:30"
+          },
+          {
+            labelKo: "석식",
+            labelEn: "Dinner",
+            time: "17:30–19:00",
+            noteKo: "(방학기간 석식 미운영)",
+            noteEn: "(No dinner service during vacation)"
+          },
+          {
+            labelKo: "주말/공휴일 휴무",
+            labelEn: "Closed on weekends/holidays"
+          }
+        ],
+        menus: {
+          onePot: {
+            title: "그여든 (One Pot Meal)",
+            items: [
+              "제육김치덮밥 · Spicy Stir-fried Pork & Kimchi Rice — 6,000 won",
+              "강된장비빔밥 · Seasoned Soybean Paste Bibimbap (LIMITED) — 6,000 won",
+              "야채김밥 · Vegetable Gimbap (LIMITED) — 2,200 won",
+              "참치김밥 · Tuna Gimbap (LIMITED) — 2,500 won",
+              "숯불돼지불고기덮밥 · Pork Bulgogi Rice — 6,000 won"
+            ]
+          },
+          makki: {
+            title: "마싰는끼니 (MAKKI)",
+            items: [
+              "돈까스카레덮밥 · Pork Cutlet with Curry & Rice — 6,500 won",
+              "고구마돈까스 · Sweet Potato Pork Cutlet — 6,300 won",
+              "갈릭돈가스 · Pork Cutlet with Garlic Sauce — 5,800 won",
+              "콩국수&만두 · Soymilk Noodle Soup & Dumpling — 6,700 won",
+              "라면 · Ramyeon — 2,200 won",
+              "공기밥 · Steamed Rice — 700 won",
+              "차돌숙주라면 · Beef Brisket & Mung Bean Sprouts Ramyeon — 4,300 won"
+            ]
+          },
+          dinner: {
+            title: "석식 · DINNER",
+            items: [
+              "통살치킨까스 · Chicken Cutlet — 5,800 won"
+            ]
+          }
+        }
+      },
+
+      tongnamu: {
+        name: "통나무집 · Tongnamujip",
+        type: "Korean Pub / Late-night Restaurant",
+        hours: [
+          {
+            labelKo: "영업시간",
+            labelEn: "Opening Hours",
+            time: "18:00–02:00",
+            noteKo: "(토요일 18:00–01:00)",
+            noteEn: "(Sat 18:00–01:00)"
+          },
+          {
+            labelKo: "라스트 오더",
+            labelEn: "Last Order",
+            time: "01:00"
+          },
+          {
+            labelKo: "일요일/공휴일 휴무",
+            labelEn: "Closed on Sundays/holidays",
+            noteKo: "(방학 기간: 주말/공휴일 휴무)",
+            noteEn: "(Vacation: closed on weekends/holidays)"
+          }
+        ],
+        menus: {
+          simple: {
+            title: "대표 메뉴 · Representative Menu",
+            items: [
+              "치킨, 튀김류, 한식 안주 등 (상세 메뉴는 추후 업데이트 예정)"
+            ]
+          }
+        }
+      },
+
+      burgerKing: {
+        name: "버거킹 포스텍점 · Burger King POSTECH",
+        type: "Fast Food",
+        hours: [
+          {
+            labelKo: "영업시간",
+            labelEn: "Opening Hours",
+            time: "11:00–20:00"
+          },
+          {
+            labelKo: "휴무일",
+            labelEn: "Closed on",
+            noteKo: "신정 / 설날 / 추석연휴 / 크리스마스",
+            noteEn: "New Year’s Day, Lunar New Year, Chuseok holidays, Christmas"
+          }
+        ],
+        menus: {
+          simple: {
+            title: "대표 메뉴 · Representative Menu",
+            items: [
+              "와퍼, 치즈버거, 감자튀김, 음료 등 (상세 메뉴는 버거킹 공식 메뉴 참고)"
+            ]
+          }
+        }
+      }
+    };
+
+    // 대상 시설을 key로 매핑
+    function getRestaurantKeyFromFacility(facility) {
+      const nameKo = facility.name_ko || "";
+      const nameEn = (facility.name_en || "").toLowerCase();
+
+      if (facility.id === 1 || nameKo.includes("지곡회관")) return "jigok";
+      if (facility.id === 2 || nameKo.includes("학생회관")) return "studentHall";
+      if (facility.id === 5 || nameKo.includes("버거킹")) return "burgerKing";
+      if (facility.id === 63 || nameKo.includes("통나무집")) return "tongnamu";
+
+      return null;
+    }
+
     // ---- 아이콘 매핑: 이전 프로젝트 규칙 그대로 반영 ----
     function getIconUrlForFacility(facility) {
       const name = facility.name_ko || "";
@@ -526,8 +715,153 @@
         return;
       }
 
+      // [NEW] 식당 상세 오버레이 대상인지 체크
+      const restKey = getRestaurantKeyFromFacility(facility);
+      if (restKey) {
+        showRestaurantOverlay(facility, restKey);
+        return;
+      }
+
       // 일반 클릭: 오버레이 열기
       showFacilityOverlay(facility);
+    }
+
+    /* === [NEW] Restaurant overlay builder === */
+    function buildRestaurantOverlayHTML(data) {
+      const hoursLines = (data.hours || [])
+        .map(h => {
+          const label =
+            (h.labelKo || h.labelEn)
+              ? `<strong>${h.labelKo || ""}${h.labelEn ? " / " + h.labelEn : ""}</strong> `
+              : "";
+          const time = h.time ? `${h.time}` : "";
+          const noteKo = h.noteKo ? ` <span style="font-size:11px; color:#666;">${h.noteKo}</span>` : "";
+          const noteEn = h.noteEn ? ` <span style="font-size:11px; color:#999;">${h.noteEn}</span>` : "";
+          return `<li style="margin-bottom:4px;">${label}${time}${noteKo}${noteEn}</li>`;
+        })
+        .join("");
+
+      let menuSections = "";
+      const menus = data.menus || {};
+      Object.values(menus).forEach(section => {
+        const itemsHTML = (section.items || [])
+          .map(item => `<li style="margin-bottom:2px;">${item}</li>`)
+          .join("");
+        menuSections += `
+          <details style="margin-bottom:6px;">
+            <summary style="font-weight:600; cursor:pointer;">${section.title}</summary>
+            <ul style="margin-top:4px; padding-left:18px; font-size:13px;">
+              ${itemsHTML}
+            </ul>
+          </details>
+        `;
+      });
+
+      return `
+        <div class="restaurant-overlay-inner"
+             style="
+              width: 600px;
+              max-height: 1000px;
+              overflow-y: auto;
+              background:#ffffff;
+              border-radius: 12px;
+              box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+              padding: 12px 14px;
+              box-sizing:border-box;
+              font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+             ">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div>
+              <div style="font-size:15px; font-weight:700;">${data.name}</div>
+              ${data.type ? `<div style="font-size:11px; color:#777;">${data.type}</div>` : ""}
+            </div>
+            <button type="button"
+                    class="restaurant-overlay-close"
+                    style="
+                      border:none;
+                      background:transparent;
+                      font-size:18px;
+                      line-height:1;
+                      cursor:pointer;
+                      padding:0 4px;
+                      color:#666;
+                    ">
+              ×
+            </button>
+          </div>
+
+          <div style="margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:6px;">
+            <div style="font-size:12px; font-weight:600; margin-bottom:4px;">영업 정보 · Opening Hours</div>
+            <ul style="margin:0; padding-left:18px; font-size:12px;">
+              ${hoursLines}
+            </ul>
+          </div>
+
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <div style="font-size:12px; font-weight:600;">메뉴 · Menu</div>
+              <button type="button"
+                      class="restaurant-overlay-nav-btn"
+                      style="
+                        border-radius: 999px;
+                        border: none;
+                        background:#c41f3e;
+                        color:#fff;
+                        font-size:11px;
+                        padding:4px 10px;
+                        cursor:pointer;
+                      ">
+                길 안내 (Route)
+              </button>
+            </div>
+            ${menuSections}
+          </div>
+        </div>
+      `;
+    }
+
+    function showRestaurantOverlay(facility, key) {
+      const data = restaurantInfo[key];
+      if (!data) {
+        // 정보 없으면 기존 오버레이로 fallback
+        showFacilityOverlay(facility);
+        return;
+      }
+
+      closeOverlay();
+
+      const pos = new kakao.maps.LatLng(facility.lat, facility.lng);
+      const wrapper = document.createElement('div');
+      wrapper.className = 'restaurant-overlay';
+      wrapper.innerHTML = buildRestaurantOverlayHTML(data);
+
+      // 닫기 버튼
+      const closeBtn = wrapper.querySelector('.restaurant-overlay-close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', closeOverlay);
+      }
+
+      // 길 안내 버튼 (기존 nav 로직 재사용)
+      const navBtn = wrapper.querySelector('.restaurant-overlay-nav-btn');
+      if (navBtn) {
+        navBtn.addEventListener('click', function () {
+          destFacility = facility;
+          const destLabel = document.getElementById('destLabel');
+          destLabel.textContent = `${facility.name_ko} / ${facility.name_en}`;
+          map.panTo(pos);
+        });
+      }
+
+      const overlay = new kakao.maps.CustomOverlay({
+        position: pos,
+        yAnchor: 1.1,
+        xAnchor: 0.5,
+        content: wrapper,
+        clickable: true
+      });
+      overlay._facility = facility;
+      overlay.setMap(map);
+      activeOverlay = overlay;
     }
 
     // ----- 시설 오버레이 -----

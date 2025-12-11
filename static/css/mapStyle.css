@@ -300,3 +300,12 @@ body {
     background: #fff3cd;
     color: #856404;
 }
+
+.restaurant-overlay-inner::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+.restaurant-overlay-inner::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 3px;
+  }
