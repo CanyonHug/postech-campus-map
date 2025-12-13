@@ -16,6 +16,7 @@ KAKAO_NAV_REST_KEY = "4a1ec0d7f44f7b800848e51bf8a2cffc"
 # Dummy User 
 USERS = {
     "postechian": {"password": "1234", "name": "포스테키안"},
+    "friendly": {"password": "4321", "name": "friendly"},
 }
 
 # load facilities from JSON
@@ -34,6 +35,29 @@ def load_facilities():
         print(f"Error: facilities.json has a formatting mistake: {e}")
         return []
 
+# Define the path for reservations JSON
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+RESERVATIONS_FILE = os.path.join(BASE_DIR, 'reservations.json')
+
+def load_reservations():
+    """Loads reservations from the JSON file on startup."""
+    if not os.path.exists(RESERVATIONS_FILE):
+        return []  # Return empty list if file doesn't exist yet
+    
+    try:
+        with open(RESERVATIONS_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (json.JSONDecodeError, IOError):
+        print("Warning: Could not read reservations.json, starting fresh.")
+        return []
+
+def save_reservations():
+    """Saves the current RESERVATIONS list to the JSON file."""
+    try:
+        with open(RESERVATIONS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(RESERVATIONS, f, ensure_ascii=False, indent=4)
+    except IOError as e:
+        print(f"Error saving reservations: {e}")
 
 # 시설 더미 데이터 (DB 대신 메모리) Facility Dummy Data (DB x, Memory O)
 # ---- 시설 더미 데이터 (기존 4개 + 추가) ----
@@ -41,7 +65,7 @@ FACILITIES = load_facilities()
 
 
 RESERVATIONS = []  # {user_id, facility_id, datetime, memo} 같은 구조로 저장한다고 가정
-
+RESERVATIONS = load_reservations()
 
 
 # ===== 유틸 =====
@@ -159,29 +183,47 @@ def api_reserve():
         return jsonify({"ok": False, "error": "로그인한 사용자만 예약할 수 있습니다."}), 401
 
     data = request.get_json()
+    # ... (Keep your existing data extraction logic for facility_id, time_slot, etc.) ...
+    
     facility_id = data.get("facility_id")
     time_slot = data.get("time_slot")
-    
-    # [UPDATE] Default to 60 minutes if missing (was 1 before)
-    duration = data.get("duration", 60) 
-    
+    duration = data.get("duration", 60)
     memo = data.get("memo", "")
 
     if not time_slot:
         return jsonify({"ok": False, "error": "시간을 선택해주세요."}), 400
 
-    # ... (Conflict check logic remains same for now) ...
+    # ... (Keep your conflict check logic here) ...
 
+    # [UPDATED SECTION] Append to list AND save to file
     RESERVATIONS.append({
         "user_id": user["id"],
         "facility_id": facility_id,
         "time_slot": time_slot,
-        "duration": duration, # Saves as minutes (e.g., 90)
+        "duration": duration,
         "memo": memo,
     })
     
-    print(f"Reservation: {time_slot}, Duration: {duration} min")
+    save_reservations()  # <--- THIS IS THE NEW LINE TO ADD
+    
+    print(f"Reservation saved: {time_slot}, Duration: {duration} min")
     return jsonify({"ok": True})
+
+@app.route("/api/my_reservations")
+def api_my_reservations():
+    user = current_user()
+    if not user or user["is_guest"]:
+        return jsonify([]) # Return empty list for guests or if not logged in
+
+    # Filter global RESERVATIONS list for the current user ID
+    # We use the 'RESERVATIONS' list that we loaded from the JSON file earlier
+    my_res = [r for r in RESERVATIONS if r["user_id"] == user["id"]]
+    
+    # Sort by time (latest first) so the newest reservations show up top
+    my_res.sort(key=lambda x: x["time_slot"], reverse=True)
+    
+    return jsonify(my_res)
+
 
 @app.route("/api/route_walk")
 def api_route_walk():

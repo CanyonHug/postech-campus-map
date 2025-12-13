@@ -21,6 +21,7 @@
           Search and reserve on-campus facilities in one place
         </div>
       </div>
+
       <div class="d-flex align-items-center">
         <div class="user-pill">
           {% if user.is_guest %}
@@ -29,10 +30,14 @@
           {{ user.name }} 님
           {% endif %}
         </div>
-        {% if user.is_guest %}
-        <a href="{{ url_for('login') }}" class="btn btn-sm btn-outline-secondary mr-2">Login</a>
-        {% else %}
+
+        {% if not user.is_guest %}
+        <button id="myReservationsBtn" class="primary-btn" style="margin-right: 10px;">
+          나의 예약 / My Reservations
+        </button>
         <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-secondary mr-2">Logout</a>
+        {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-sm btn-outline-secondary mr-2">Login</a>
         {% endif %}
       </div>
     </div>
@@ -146,7 +151,7 @@
     const CURRENT_ICON = "{{ url_for('static', filename='images/current_location.jpg') }}";
     const IS_GUEST = {{ 'true' if user.is_guest else 'false' }};
 
-        /* === [NEW] Restaurant metadata for detailed popups === */
+    /* === [NEW] Restaurant metadata for detailed popups === */
     const restaurantInfo = {
       jigok: {
         name: "지곡회관 식당 · Jigok Dining Hall",
@@ -516,14 +521,70 @@
       loadFacilities();
       initCurrentLocation();
 
-  
-      $('#resDuration').on('input', function() {
+
+      $('#resDuration').on('input', function () {
         const mins = parseInt($(this).val());
         const h = Math.floor(mins / 60);
         const m = mins % 60;
         $('#durationLabel').text(`${h} h ${m} min`);
       });
     });
+
+    $('#myReservationsBtn').on('click', function () {
+      loadMyReservations();
+    });
+
+    function loadMyReservations() {
+      // Fetch reservations from server
+      fetch('/api/my_reservations')
+        .then(res => res.json())
+        .then(data => {
+          const listGroup = $('#myReservationListGroup');
+          const noMsg = $('#noReservationsMsg');
+
+          listGroup.empty(); // Clear old list
+
+          if (!data || data.length === 0) {
+            noMsg.removeClass('d-none');
+            $('#myReservationsModal').modal('show');
+            return;
+          }
+
+          noMsg.addClass('d-none');
+
+          // Iterate and build list items
+          data.forEach(res => {
+            // Find facility name from our global 'allFacilities' array
+            const facility = allFacilities.find(f => f.id === res.facility_id);
+            const facilityName = facility ? `${facility.name_ko} (${facility.name_en})` : `Facility #${res.facility_id}`;
+
+            // Format Duration
+            const h = Math.floor(res.duration / 60);
+            const m = res.duration % 60;
+            const durationStr = (h > 0 ? `${h}h ` : '') + (m > 0 ? `${m}m` : '');
+
+            const itemHtml = `
+                    <li class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1" style="color: #c41f3e; font-weight:bold;">${facilityName}</h5>
+                            <small class="text-muted">${res.time_slot.replace('T', ' ')}</small>
+                        </div>
+                        <p class="mb-1">
+                            <strong>Duration:</strong> ${durationStr}<br>
+                            ${res.memo ? `<strong>Memo:</strong> ${res.memo}` : ''}
+                        </p>
+                    </li>
+                `;
+            listGroup.append(itemHtml);
+          });
+
+          $('#myReservationsModal').modal('show');
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Error loading reservations.");
+        });
+    }
 
     function initLangToggle() {
       const $buttons = $('#langToggle button');
@@ -979,7 +1040,7 @@
       $('#resDuration').val('1'); // Default to 1 hour
       $('#resMemo').val('');
       $('#resAlert').addClass('d-none').text('');
-      
+
       // 2. Set Title
       $('#resModalTitle').text(`Reserve: ${facility.name_ko}`);
 
@@ -1129,34 +1190,56 @@
           <div id="resAlert" class="alert alert-danger d-none" role="alert"></div>
 
           <form id="reservationForm">
-          <input type="hidden" id="resFacilityId">
-          
-          <div class="form-group">
-            <label for="resTime">Start Time / 시작 시간</label>
-            <input type="datetime-local" class="form-control" id="resTime" required>
-          </div>
+            <input type="hidden" id="resFacilityId">
 
-          <div class="form-group">
-            <label for="resDuration">
-              Duration / 이용 시간: 
-              <span id="durationLabel" style="color: #c41f3e; font-weight: bold;">1 h 0 min</span>
-            </label>
-            <input type="range" class="form-control-range" id="resDuration" 
-                   min="30" max="180" step="30" value="60">
-            <small class="form-text text-muted">
-              Slide to select (30 min ~ 3 hours).
-            </small>
-          </div>
+            <div class="form-group">
+              <label for="resTime">Start Time / 시작 시간</label>
+              <input type="datetime-local" class="form-control" id="resTime" required>
+            </div>
 
-          <div class="form-group">
-            <label for="resMemo">Memo / 메모 (Optional)</label>
-            <textarea class="form-control" id="resMemo" rows="2" placeholder="Purpose of use..."></textarea>
-          </div>
-        </form>
+            <div class="form-group">
+              <label for="resDuration">
+                Duration / 이용 시간:
+                <span id="durationLabel" style="color: #c41f3e; font-weight: bold;">1 h 0 min</span>
+              </label>
+              <input type="range" class="form-control-range" id="resDuration" min="30" max="180" step="30" value="60">
+              <small class="form-text text-muted">
+                Slide to select (30 min ~ 3 hours).
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="resMemo">Memo / 메모 (Optional)</label>
+              <textarea class="form-control" id="resMemo" rows="2" placeholder="Purpose of use..."></textarea>
+            </div>
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" onclick="submitReservation()">Confirm Reservation</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="myReservationsModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">My Reservations · 나의 예약 내역</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+          <ul class="list-group" id="myReservationListGroup">
+          </ul>
+          <div id="noReservationsMsg" class="text-center text-muted p-4 d-none">
+            예약 내역이 없습니다.<br>No active reservations found.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

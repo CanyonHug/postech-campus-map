@@ -1,0 +1,16 @@
+[
+    {
+        "user_id": "postechian",
+        "facility_id": 60,
+        "time_slot": "2025-12-14T12:50",
+        "duration": 90,
+        "memo": "studying"
+    },
+    {
+        "user_id": "postechian",
+        "facility_id": 42,
+        "time_slot": "2025-12-15T12:45",
+        "duration": 150,
+        "memo": "sports"
+    }
+]
