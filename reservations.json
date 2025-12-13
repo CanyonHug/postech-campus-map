@@ -12,5 +12,19 @@
         "time_slot": "2025-12-15T12:45",
         "duration": 150,
         "memo": "sports"
+    },
+    {
+        "user_id": "postechian",
+        "facility_id": 42,
+        "time_slot": "2025-12-13T11:05",
+        "duration": 60,
+        "memo": "unlocking tennis skills"
+    },
+    {
+        "user_id": "postechian",
+        "facility_id": 40,
+        "time_slot": "2025-12-06T08:45",
+        "duration": 120,
+        "memo": "socccer football"
     }
 ]

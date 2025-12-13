@@ -4,6 +4,7 @@ from flask import (
 )
 
 import os, requests, json
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.secret_key = "CHANGE_ME_TO_RANDOM_SECRET"  # should be changed if real service is realeased
@@ -183,30 +184,59 @@ def api_reserve():
         return jsonify({"ok": False, "error": "로그인한 사용자만 예약할 수 있습니다."}), 401
 
     data = request.get_json()
-    # ... (Keep your existing data extraction logic for facility_id, time_slot, etc.) ...
-    
     facility_id = data.get("facility_id")
     time_slot = data.get("time_slot")
-    duration = data.get("duration", 60)
+    duration = int(data.get("duration", 60)) # Ensure int
     memo = data.get("memo", "")
 
     if not time_slot:
         return jsonify({"ok": False, "error": "시간을 선택해주세요."}), 400
 
-    # ... (Keep your conflict check logic here) ...
+    # --- [NEW] Conflict Detection Logic ---
+    try:
+        # 1. Calculate New Request Start & End
+        # Input format from HTML is usually "YYYY-MM-DDTHH:MM"
+        new_start = datetime.fromisoformat(time_slot)
+        new_end = new_start + timedelta(minutes=duration)
 
-    # [UPDATED SECTION] Append to list AND save to file
+        # 2. Check against ALL existing reservations
+        for r in RESERVATIONS:
+            # Check if it's the same facility (compare as strings to be safe)
+            if str(r.get("facility_id")) == str(facility_id):
+                
+                # Calculate Existing Reservation Start & End
+                try:
+                    ex_start = datetime.fromisoformat(r["time_slot"])
+                    ex_duration = int(r.get("duration", 60))
+                    ex_end = ex_start + timedelta(minutes=ex_duration)
+
+                    # 3. Check for Overlap
+                    # (Start A is before End B) AND (End A is after Start B)
+                    if new_start < ex_end and new_end > ex_start:
+                        return jsonify({
+                            "ok": False, 
+                            "error": f"이미 예약이 있습니다 (Conflict): {ex_start.strftime('%H:%M')} - {ex_end.strftime('%H:%M')}"
+                        }), 400
+                        
+                except (ValueError, KeyError):
+                    continue # Skip malformed data in history
+
+    except ValueError:
+        return jsonify({"ok": False, "error": "날짜 형식이 올바르지 않습니다."}), 400
+
+    # --- If we get here, the slot is free ---
+    
     RESERVATIONS.append({
         "user_id": user["id"],
-        "facility_id": facility_id,
+        "facility_id": int(facility_id), # Store ID as int
         "time_slot": time_slot,
         "duration": duration,
         "memo": memo,
     })
     
-    save_reservations()  # <--- THIS IS THE NEW LINE TO ADD
+    save_reservations()
     
-    print(f"Reservation saved: {time_slot}, Duration: {duration} min")
+    print(f"Reservation saved: {time_slot} for {duration} min")
     return jsonify({"ok": True})
 
 @app.route("/api/my_reservations")
